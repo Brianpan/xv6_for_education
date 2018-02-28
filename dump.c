@@ -40,7 +40,7 @@ void dump()
 	// 	procMemSize -= PGSIZE;
 	// 	address += PGSIZE;
 	// }
-	int s = dump(pid, address, (void*)buf, PGSIZE);
+	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
 	printf(1, "int return from dump: %d", s);
 }
 
