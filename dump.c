@@ -6,7 +6,7 @@
 #define PGSIZE 4096
 
 
-void dump()
+void dump2()
 {
 	/* Fork a new process to play with */
   	/* We don't have a good way to list all pids in the system
@@ -47,6 +47,6 @@ void dump()
 
 int main(int argc, char* argv[])
 {
-	dump();
+	dump2();
 	exit();
 }
