@@ -97,8 +97,12 @@ sys_dump(void)
   int pid, size;
   char *buf;
   char *address;
-  if( argint(0, &pid) < 0 || argint(3, &size) < 0 )
+  if( argint(0, &pid) < 0 || argint(3, &size) < 0 || argptr(2, &buf, size) < 0 || argptr(1, &address, 4) < 0 )
     return -1;
 
+  if(argptr(2, &buf, size) < 0)
+    return -2
+  if(argptr(1, &address, 4) < 0)
+    return -3
   return size;
 }

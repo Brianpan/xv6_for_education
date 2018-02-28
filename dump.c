@@ -4,7 +4,7 @@
 #include "syscall.h"
 
 #define PGSIZE 4096
-
+#define DUMPSIZE 1024
 
 void dump_mem()
 {
@@ -22,8 +22,9 @@ void dump_mem()
 	}
 
 	/* parent dumps memory of the child */
-	char buf[1024];
-	memset(buf, 0, 1024);
+	char buf[DUMPSIZE];
+	memset(buf, 0, DUMPSIZE);
+
 	// uint procMemSize = sbrk(0);
 	uint address = 0x0;
 	// VA is from 0 to p->sz
@@ -41,7 +42,7 @@ void dump_mem()
 	// 	address += PGSIZE;
 	// }
 	
-	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
+	int s = dump(pid, (void*)&address, (void*)buf, DUMPSIZE);
 	printf(1, "int return from dump: %d", s);
 	
 }
