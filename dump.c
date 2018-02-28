@@ -22,10 +22,10 @@ void dump_mem()
 	}
 
 	/* parent dumps memory of the child */
-	char buf[DUMPSIZE];
-	memset(buf, 0, DUMPSIZE);
+	char *buf = malloc(PGSIZE);
+	memset(buf, 0, PGSIZE);
 
-	// uint procMemSize = sbrk(0);
+	uint procMemSize = sbrk(0);
 	uint address = 0x0;
 	// VA is from 0 to p->sz
 	// based on allouvm -> mappages VA is the oldsz ( a = PGROUNDUP(oldsz); )
@@ -42,7 +42,7 @@ void dump_mem()
 	// 	address += PGSIZE;
 	// }
 	
-	int s = dump(pid, (void*)&address, (void*)buf, DUMPSIZE);
+	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
 	printf(1, "int return from dump: %d", s);
 	
 }

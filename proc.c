@@ -539,5 +539,11 @@ procdump(void)
 // sys dump
 int dump(int pid, void *addr, void *buffer, int size)
 {
-  return size;
+  for(p=ptable.proc;p < &ptable.proc[NPROC];p++)
+  {
+    // target pid
+    if(p->pid == pid)
+      return pid;
+  }
+  return -1;
 }
