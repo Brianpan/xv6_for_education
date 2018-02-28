@@ -551,10 +551,10 @@ int dump(int pid, void *addr, void *buffer, int size)
       //
       pde_t *pgaddr;
       // pde_t *mem_val;
-      while( ((int*)addr)) < size )
+      while( ((int*)addr) < size )
       {
         pgaddr = walkpgdir(p->pgdir, addr, 0);
-        memcpy( buf, *pgaddr, size );
+        memmove( buffer, *pgaddr, size );
         break;
         // *((int*)addr) += pgsize;
       } 
