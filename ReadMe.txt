@@ -55,3 +55,17 @@ Can use ENTRY(symbol) to set the entry point
 4. .bss  : read-write initialized data
 
 
+# X86 Assembly
+Ref: https://stackoverflow.com/questions/3215878/what-are-in-out-instructions-in-x86-used-for
+out : write to I/O Device
+in  : read from I/O Device
+
+in $0x60 %al # get the scancode ID of the last character typed on the keyboard to al
+out %al $0x60
+
+-Long jump, use 0xfebc for the CS register and 0x12345678 for the EIP register
+ljmp    0xfebc, EIP
+
+- CR Registers 
+Reference: https://stackoverflow.com/questions/23230959/how-to-get-control-register-cr2-value
+They are run in ring0 that is we can not fetch it from GDB

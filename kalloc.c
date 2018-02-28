@@ -36,6 +36,7 @@ kinit1(void *vstart, void *vend)
   freerange(vstart, vend);
 }
 
+// from the PHYSTOP generates freelist
 void
 kinit2(void *vstart, void *vend)
 {
@@ -61,7 +62,7 @@ void
 kfree(char *v)
 {
   struct run *r;
-
+  // OVER physical limits it will cause panic
   if((uint)v % PGSIZE || v < end || V2P(v) >= PHYSTOP)
     panic("kfree");
 

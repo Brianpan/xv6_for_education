@@ -22,6 +22,7 @@ struct elfhdr {
 };
 
 // Program section header
+// readelf -l
 struct proghdr {
   uint type;
   uint off;

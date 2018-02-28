@@ -89,3 +89,16 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// sys dump
+int
+sys_dump(void)
+{
+  int pid, size;
+  char *buf;
+  char *address;
+  if( argint(0, &pid)< 0 || argint(3, &size)< 0 || argptr(2, &buf, size) < 0 || argstr(1, &address) < 0 )
+    return -1;
+
+  return dump(pid, address, buf, size);
+}

@@ -21,6 +21,7 @@ start:
   # Physical address line A20 is tied to zero so that the first PCs 
   # with 2 MB would run software that assumed 1 MB.  Undo that.
 seta20.1:
+  # input byte from $0x64 port to %al 
   inb     $0x64,%al               # Wait for not busy
   testb   $0x2,%al
   jnz     seta20.1
@@ -84,5 +85,5 @@ gdt:
 
 gdtdesc:
   .word   (gdtdesc - gdt - 1)             # sizeof(gdt) - 1
-  .long   gdt                             # address gdt
+  .long   gdt                             # address gdt , point to  address of gdt
 

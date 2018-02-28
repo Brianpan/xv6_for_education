@@ -23,6 +23,7 @@ static void wakeup1(void *chan);
 void
 pinit(void)
 {
+  // second argument is locker name
   initlock(&ptable.lock, "ptable");
 }
 
@@ -170,6 +171,7 @@ growproc(int n)
       return -1;
   }
   curproc->sz = sz;
+  //!!!
   switchuvm(curproc);
   return 0;
 }
@@ -284,6 +286,7 @@ wait(void)
       if(p->parent != curproc)
         continue;
       havekids = 1;
+      // end child child process change state
       if(p->state == ZOMBIE){
         // Found one.
         pid = p->pid;
@@ -531,4 +534,10 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+// sys dump
+int dump(int pid, void *addr, void *buffer, int size)
+{
+  return size;
 }

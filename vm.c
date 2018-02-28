@@ -39,10 +39,15 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
   pde_t *pde;
   pte_t *pgtab;
 
+  // get page directory entry
+  // PDX(va) get first 10 bits of VA 
   pde = &pgdir[PDX(va)];
   if(*pde & PTE_P){
+    // PTE_ADDR means last 12 bits zero
+    // then point to pagetable
     pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
   } else {
+    // create page table
     if(!alloc || (pgtab = (pte_t*)kalloc()) == 0)
       return 0;
     // Make sure all those PTE_P bits are zero.
@@ -63,17 +68,21 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 {
   char *a, *last;
   pte_t *pte;
-
+  // for alignment
   a = (char*)PGROUNDDOWN((uint)va);
+  // array start from 0
   last = (char*)PGROUNDDOWN(((uint)va) + size - 1);
   for(;;){
     if((pte = walkpgdir(pgdir, a, 1)) == 0)
       return -1;
+    // the page table is already mapped
     if(*pte & PTE_P)
       panic("remap");
+    // assign physical address to pte
     *pte = pa | perm | PTE_P;
     if(a == last)
       break;
+    // move to next page
     a += PGSIZE;
     pa += PGSIZE;
   }
@@ -110,7 +119,9 @@ static struct kmap {
   uint phys_end;
   int perm;
 } kmap[] = {
+  // 4GB (vir)
  { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space
+ // 4GB + 1MB
  { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0},     // kern text+rodata
  { (void*)data,     V2P(data),     PHYSTOP,   PTE_W}, // kern data+memory
  { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices
@@ -123,11 +134,15 @@ setupkvm(void)
   pde_t *pgdir;
   struct kmap *k;
 
+  // page directory is 1 page 4KB
   if((pgdir = (pde_t*)kalloc()) == 0)
     return 0;
   memset(pgdir, 0, PGSIZE);
   if (P2V(PHYSTOP) > (void*)DEVSPACE)
     panic("PHYSTOP too high");
+  // NELEM -> count # of elements in fixed size array
+  // map I/O, kern text/rodata, data+memory, device spaces
+  // each directory hierachy
   for(k = kmap; k < &kmap[NELEM(kmap)]; k++)
     if(mappages(pgdir, k->virt, k->phys_end - k->phys_start,
                 (uint)k->phys_start, k->perm) < 0) {
@@ -205,9 +220,11 @@ loaduvm(pde_t *pgdir, char *addr, struct inode *ip, uint offset, uint sz)
   if((uint) addr % PGSIZE != 0)
     panic("loaduvm: addr must be page aligned");
   for(i = 0; i < sz; i += PGSIZE){
+    // pte is page table entry of addr+i
     if((pte = walkpgdir(pgdir, addr+i, 0)) == 0)
       panic("loaduvm: address should exist");
     pa = PTE_ADDR(*pte);
+    // in-node size
     if(sz - i < PGSIZE)
       n = sz - i;
     else
@@ -225,7 +242,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
   char *mem;
   uint a;
-
+  // if 32 bits overflow it may pass this check
   if(newsz >= KERNBASE)
     return 0;
   if(newsz < oldsz)
@@ -240,6 +257,7 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       return 0;
     }
     memset(mem, 0, PGSIZE);
+    // user bit & writable
     if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
       cprintf("allocuvm out of memory (2)\n");
       deallocuvm(pgdir, newsz, oldsz);

@@ -20,7 +20,10 @@ tvinit(void)
   int i;
 
   for(i = 0; i < 256; i++)
+    // default is set to interrupt
     SETGATE(idt[i], 0, SEG_KCODE<<3, vectors[i], 0);
+  // sys call set to trap
+  // let user process can execute sys-call
   SETGATE(idt[T_SYSCALL], 1, SEG_KCODE<<3, vectors[T_SYSCALL], DPL_USER);
 
   initlock(&tickslock, "time");

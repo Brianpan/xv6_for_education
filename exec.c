@@ -35,6 +35,8 @@ exec(char *path, char **argv)
   if(elf.magic != ELF_MAGIC)
     goto bad;
 
+  // Set up page table directory
+  // new pg dir
   if((pgdir = setupkvm()) == 0)
     goto bad;
 
@@ -47,12 +49,16 @@ exec(char *path, char **argv)
       continue;
     if(ph.memsz < ph.filesz)
       goto bad;
+    // check the sum is overflow 32 bits integer
     if(ph.vaddr + ph.memsz < ph.vaddr)
       goto bad;
+    // after create page for new process updating size equal ph.vaddr + ph.memsz
     if((sz = allocuvm(pgdir, sz, ph.vaddr + ph.memsz)) == 0)
       goto bad;
     if(ph.vaddr % PGSIZE != 0)
       goto bad;
+    // load program into memory
+    // if not checking ph.vaddr + pg.memsz < ph.vaddr it may send the kernel address into loaduvm
     if(loaduvm(pgdir, (char*)ph.vaddr, ip, ph.off, ph.filesz) < 0)
       goto bad;
   }
@@ -65,6 +71,7 @@ exec(char *path, char **argv)
   sz = PGROUNDUP(sz);
   if((sz = allocuvm(pgdir, sz, sz + 2*PGSIZE)) == 0)
     goto bad;
+  // clear user accessible flag for guard page
   clearpteu(pgdir, (char*)(sz - 2*PGSIZE));
   sp = sz;
 
@@ -72,6 +79,7 @@ exec(char *path, char **argv)
   for(argc = 0; argv[argc]; argc++) {
     if(argc >= MAXARG)
       goto bad;
+    // push all argument
     sp = (sp - (strlen(argv[argc]) + 1)) & ~3;
     if(copyout(pgdir, sp, argv[argc], strlen(argv[argc]) + 1) < 0)
       goto bad;

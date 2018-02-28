@@ -1,6 +1,9 @@
 #include "syscall.h"
 #include "traps.h"
-
+// int means generating interruption
+// movl $SYS_$(name) like $SYS_fork
+// ## means paste 	$SYS_ name into single token
+// https://www.cprogramming.com/reference/preprocessor/token-pasting-operator.html
 #define SYSCALL(name) \
   .globl name; \
   name: \
@@ -29,3 +32,4 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
+SYSCALL(dump)

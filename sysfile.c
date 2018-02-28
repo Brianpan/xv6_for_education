@@ -72,12 +72,15 @@ sys_read(void)
   struct file *f;
   int n;
   char *p;
-
+  // arg 0: fd
+  // arg 1: buffer (ptr)
+  // arg 2: size
   if(argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argptr(1, &p, n) < 0)
     return -1;
   return fileread(f, p, n);
 }
 
+// sys call write called from usys.S
 int
 sys_write(void)
 {

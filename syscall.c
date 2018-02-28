@@ -46,6 +46,7 @@ fetchstr(uint addr, char **pp)
 }
 
 // Fetch the nth 32-bit system call argument.
+// read nth argument into ip
 int
 argint(int n, int *ip)
 {
@@ -63,6 +64,7 @@ argptr(int n, char **pp, int size)
  
   if(argint(n, &i) < 0)
     return -1;
+  // check is a valid user-space pointer
   if(size < 0 || (uint)i >= curproc->sz || (uint)i+size > curproc->sz)
     return -1;
   *pp = (char*)i;
@@ -126,6 +128,7 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_dump]    sys_dump
 };
 
 void
@@ -136,6 +139,7 @@ syscall(void)
 
   num = curproc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+    // exec sys call
     curproc->tf->eax = syscalls[num]();
   } else {
     cprintf("%d %s: unknown sys call %d\n",

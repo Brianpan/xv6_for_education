@@ -11,6 +11,7 @@ start:
   pushl $argv
   pushl $init
   pushl $0  // where caller pc would be
+  # sys call into eax
   movl $SYS_exec, %eax
   int $T_SYSCALL
 

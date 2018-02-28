@@ -32,9 +32,19 @@ bootmain(void)
     return;  // let bootasm.S handle error
 
   // Load each program segment (ignores ph flags).
+  // elf->phoff means page header offset
   ph = (struct proghdr*)((uchar*)elf + elf->phoff);
+  // Brian's Note
+  // this eph will put into stack
+  // 7d71:       0f b7 05 2c 00 01 00    movzwl 0x1002c,%eax
+  //  7d78:       c1 e0 05                shl    $0x5,%eax
+  //  7d7b:       01 d8                   add    %ebx,%eax
+  //  7d7d:       89 45 e4                mov    %eax,-0x1c(%ebp)
   eph = ph + elf->phnum;
   for(; ph < eph; ph++){
+    // Brian notes:
+    // read program segment from disk to physical address
+    // ph->filesz means which much bytes we should load from disk
     pa = (uchar*)ph->paddr;
     readseg(pa, ph->filesz, ph->off);
     if(ph->memsz > ph->filesz)
@@ -74,6 +84,7 @@ readsect(void *dst, uint offset)
 }
 
 // Read 'count' bytes at 'offset' from kernel into physical address 'pa'.
+// Brian notes: count means how much you should read 
 // Might copy more than asked.
 void
 readseg(uchar* pa, uint count, uint offset)
