@@ -25,8 +25,10 @@ void dump_mem()
 	char *buf = malloc(PGSIZE);
 	memset(buf, 0, PGSIZE);
 
-	uint procMemSize = sbrk(0);
+	unsigned int procMemSize = (unsigned int) sbrk(0);
 	uint address = 0x0;
+	printf(1, "proc mem: %d", procMemSize);
+
 	// VA is from 0 to p->sz
 	// based on allouvm -> mappages VA is the oldsz ( a = PGROUNDUP(oldsz); )
 	// while(  procMemSize > 0 )
@@ -43,7 +45,14 @@ void dump_mem()
 	// }
 	
 	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
+	for(int i=0;i<1024;i++)
+	{
+		int a = *(int*)(buf+i*4);
+		printf(1, "0x%x", a);
+	}
+
 	printf(1, "int return from dump: %d", s);
+
 	
 }
 

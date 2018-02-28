@@ -539,11 +539,29 @@ procdump(void)
 // sys dump
 int dump(int pid, void *addr, void *buffer, int size)
 {
+  struct proc *p;
+  int pgsize = 4096;
+  acquire(&ptable.lock);
+
   for(p=ptable.proc;p < &ptable.proc[NPROC];p++)
   {
     // target pid
     if(p->pid == pid)
-      return pid;
+    {
+      //
+      pde_t *pgaddr;
+      pde_t *mem_val;
+      while( ((int*)addr)) < size )
+      {
+        pgaddr = walkpgdir(p->pgdir, addr, 0);
+        memcpy( buf, *pgaddr, size );
+        break;
+        // *((int*)addr) += pgsize;
+      } 
+      release(&ptable.lock);
+      return size;
+    }
   }
+  release(&ptable.lock);
   return -1;
 }
