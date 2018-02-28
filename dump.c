@@ -22,8 +22,8 @@ void dump_mem()
 	}
 
 	/* parent dumps memory of the child */
-	char buf[PGSIZE];
-	memset(buf, 0, PGSIZE);
+	char buf[1024];
+	memset(buf, 0, 1024);
 	// uint procMemSize = sbrk(0);
 	uint address = 0x0;
 	// VA is from 0 to p->sz
@@ -42,7 +42,7 @@ void dump_mem()
 	// }
 	
 	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
-	printf(1, "int return from dump:");
+	printf(1, "int return from dump: %d", s);
 	
 }
 
