@@ -24,7 +24,7 @@ void dump()
 	/* parent dumps memory of the child */
 	char buf[PGSIZE];
 	memset(buf, PGSIZE, 0);
-	uint procMemSize = sbrk(0);
+	// uint procMemSize = sbrk(0);
 	uint address = 0;
 	// VA is from 0 to p->sz
 	// based on allouvm -> mappages VA is the oldsz ( a = PGROUNDUP(oldsz); )
@@ -40,8 +40,8 @@ void dump()
 	// 	procMemSize -= PGSIZE;
 	// 	address += PGSIZE;
 	// }
-	int s = dump(pid, (void*) address, (void*)buf, PGSIZE);
-	printf("int return from dump: %d", s);
+	int s = dump(pid, address, (void*)buf, PGSIZE);
+	printf(1, "int return from dump: %d", s);
 }
 
 

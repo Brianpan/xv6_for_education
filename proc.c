@@ -537,7 +537,7 @@ procdump(void)
 }
 
 // sys dump
-int dump(int pid, void *addr, void *buffer, int size)
+int dump(int pid, int addr, void *buffer, int size)
 {
   return size;
 }
