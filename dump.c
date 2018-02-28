@@ -6,7 +6,7 @@
 #define PGSIZE 4096
 
 
-void dump2()
+void dump_mem()
 {
 	/* Fork a new process to play with */
   	/* We don't have a good way to list all pids in the system
@@ -23,9 +23,9 @@ void dump2()
 
 	/* parent dumps memory of the child */
 	char buf[PGSIZE];
-	memset(buf, PGSIZE, 0);
+	memset(buf, 0, PGSIZE);
 	// uint procMemSize = sbrk(0);
-	uint address = 0;
+	uint address = 0x0;
 	// VA is from 0 to p->sz
 	// based on allouvm -> mappages VA is the oldsz ( a = PGROUNDUP(oldsz); )
 	// while(  procMemSize > 0 )
@@ -40,13 +40,15 @@ void dump2()
 	// 	procMemSize -= PGSIZE;
 	// 	address += PGSIZE;
 	// }
+	
 	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
-	cprintf("int return from dump: %d", s);
+	printf(1, "int return from dump:");
+	
 }
 
 
 int main(int argc, char* argv[])
 {
-	dump2();
+	dump_mem();
 	exit();
 }
