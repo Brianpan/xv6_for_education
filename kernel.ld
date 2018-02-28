@@ -3,8 +3,8 @@
 
 OUTPUT_FORMAT("elf32-i386", "elf32-i386", "elf32-i386")
 OUTPUT_ARCH(i386)
-// entry point _start
-// assigned in entry.S #41
+/* entry point _start */
+/* assigned in entry.S #41 */
 ENTRY(_start)
 
 SECTIONS
