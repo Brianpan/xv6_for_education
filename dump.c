@@ -48,7 +48,7 @@ void dump_mem()
 	for(int i=0;i<1024;i++)
 	{
 		int a = *(int*)(buf+i*4);
-		printf(1, "0x%x", a);
+		printf(1, "0x%x\n", a);
 	}
 
 	printf(1, "int return from dump: %d", s);
