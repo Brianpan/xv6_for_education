@@ -11,6 +11,8 @@ void dump_mem()
 	/* Fork a new process to play with */
   	/* We don't have a good way to list all pids in the system
     so forking a new process works for testing */ 
+	unsigned int procMemSize = (unsigned int) sbrk(0);
+
 	int pid = fork();
 
 	if(pid == 0)
@@ -22,12 +24,11 @@ void dump_mem()
 	}
 
 	/* parent dumps memory of the child */
-	char *buf = malloc(PGSIZE);
-	memset(buf, 0, PGSIZE);
+	char *buf = malloc(procMemSize);
+	memset(buf, 0, procMemSize);
 
-	unsigned int procMemSize = (unsigned int) sbrk(0);
 	uint address = 0x0;
-	printf(1, "proc mem: %d", procMemSize);
+	printf(1, "proc mem: %d\n", procMemSize);
 
 	// VA is from 0 to p->sz
 	// based on allouvm -> mappages VA is the oldsz ( a = PGROUNDUP(oldsz); )
@@ -44,10 +45,10 @@ void dump_mem()
 	// 	address += PGSIZE;
 	// }
 	
-	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
+	int s = dump(pid, (void*)&address, (void*)buf, procMemSize);
 	int i=0;
 	
-	for(i=0;i<1024;i++)
+	for(i=0;i<procMemSize/4;i++)
 	{
 		if(i%4 == 0)
 			printf(1, "\n");
