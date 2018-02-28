@@ -45,10 +45,15 @@ void dump_mem()
 	// }
 	
 	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
-	for(int i=0;i<1024;i++)
+	int i=0;
+	
+	for(i=0;i<1024;i++)
 	{
+		if(i%4 == 0)
+			printf(1, "\n");
 		int a = *(int*)(buf+i*4);
-		printf(1, "0x%x\n", a);
+		printf(1, "0x%x ", a);
+
 	}
 
 	printf(1, "int return from dump: %d", s);
