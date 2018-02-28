@@ -41,7 +41,7 @@ void dump2()
 	// 	address += PGSIZE;
 	// }
 	int s = dump(pid, (void*)&address, (void*)buf, PGSIZE);
-	printf(1, "int return from dump: %d", s);
+	cprintf("int return from dump: %d", s);
 }
 
 

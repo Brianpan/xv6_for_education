@@ -100,5 +100,5 @@ sys_dump(void)
   if( argint(0, &pid) < 0 || argint(3, &size) < 0 || argptr(2, &buf, size) < 0 || argptr(1, &address, sizeof(uint)) < 0 )
     return -1;
 
-  return dump(pid, (void*)address, (void*)buf, size);
+  return size;
 }
