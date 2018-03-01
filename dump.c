@@ -35,10 +35,11 @@ void dump_mem()
 	// based on allouvm -> mappages VA is the oldsz ( a = PGROUNDUP(oldsz); )
 	while(  procMemSize > 0 )
 	{
-		if( PGSIZE != dump(pid, (void*) &address, (void*)buf, PGSIZE) )
+		memset(buf, 0, PGSIZE);
+		if( PGSIZE != dump(pid, (void*) address, (void*)buf, PGSIZE) )
 			printf(1, "size not matched!");
 		
-		printf(1, "---------------\n\n");
+		printf(1, "\n\n---------------\n\n");
 		// print the address
 		int i;
 		for(i=0;i<PGSIZE/4;i++)
