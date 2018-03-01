@@ -540,7 +540,7 @@ procdump(void)
 int dump(int pid, void *addr, void *buffer, int size)
 {
   struct proc *p;
-  int pgsize = 4096;
+  // int pgsize = 4096;
   acquire(&ptable.lock);
 
   for(p=ptable.proc;p < &ptable.proc[NPROC];p++)

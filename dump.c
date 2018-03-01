@@ -24,7 +24,9 @@ void dump_mem()
 
 	/* parent dumps memory of the child */
 	char *buf = malloc(PGSIZE);
-	memset(buf, 0, procMemSize);
+	memset(buf, 0, PGSIZE);
+	// char *buf = malloc(procMemSize);
+	// memset(buf, 0, procMemSize);
 
 	uint address = 0x0;
 	printf(1, "proc mem: %d\n", procMemSize);
@@ -35,9 +37,10 @@ void dump_mem()
 	{
 		if( PGSIZE != dump(pid, (void*) &address, (void*)buf, PGSIZE) )
 			printf(1, "size not matched!");
-		printf("---------------\n\n");
+		
+		printf(1, "---------------\n\n");
 		// print the address
-		int i= 0;
+		int i;
 		for(i=0;i<PGSIZE/4;i++)
 		{
 			if(i%4 == 0)
