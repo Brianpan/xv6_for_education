@@ -4,7 +4,6 @@
 #include "syscall.h"
 
 #define PGSIZE 4096
-#define DUMPSIZE 1024
 
 void dump_mem()
 {
@@ -54,10 +53,10 @@ void dump_mem()
 		if(i%4 == 0)
 		{
 			printf(1, "\n");
-			printf(1, "%x: ", address);
+			printf(1, "0x%x: ", address);
 		}
 		int a = *(int*)(buf+i*4);
-		printf(1, "%x  ", a);
+		printf(1, "0x%x  ", a);
 		address += 4;
 	}
 }

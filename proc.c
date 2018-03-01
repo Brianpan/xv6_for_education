@@ -552,8 +552,9 @@ int dump(int pid, void *addr, void *buffer, int size)
       int saddr = *((int*)addr);
       while( saddr < size )
       {
-        pgaddr = walkpgdir(p->pgdir, addr, 0);
-        memmove( buffer, pgaddr, size );
+        pgaddr = walkpgdir(p->pgdir, saddr, 0);
+        uint ptr = PTE_ADDR(*pgaddr);
+        memmove( buffer, (void*) ptr, size );
         saddr += pgsize;
       } 
       release(&ptable.lock);
