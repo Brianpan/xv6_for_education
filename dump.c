@@ -51,10 +51,13 @@ void dump_mem()
 	for(i=0;i<procMemSize/4;i++)
 	{
 		if(i%4 == 0)
+		{
 			printf(1, "\n");
+			printf(1, "0x%08x: ", address);
+		}
 		int a = *(int*)(buf+i*4);
-		printf(1, "0x%x ", a);
-
+		printf(1, "0x%08x  ", a);
+		address += 4;
 	}
 
 	printf(1, "int return from dump: %d", s);
