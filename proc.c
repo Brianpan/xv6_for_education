@@ -540,7 +540,6 @@ procdump(void)
 int dump(int pid, void *addr, void *buffer, int size)
 {
   struct proc *p;
-  // int pgsize = 4096;
   acquire(&ptable.lock);
 
   for(p=ptable.proc;p < &ptable.proc[NPROC];p++)
@@ -552,14 +551,6 @@ int dump(int pid, void *addr, void *buffer, int size)
       pgaddr = walkpgdir(p->pgdir, (void*) addr, 0);
       uint ptr = PTE_ADDR(*pgaddr);
       memmove( buffer, (void*) P2V(ptr), size );
-      // while( saddr < size )
-      // {
-      //   pgaddr = walkpgdir(p->pgdir, (void*) saddr, 0);
-      //   uint ptr = PTE_ADDR(*pgaddr);
-        
-      //   memmove( buffer, (void*) P2V(ptr), size );
-      //   saddr += pgsize;
-      // } 
 
       release(&ptable.lock);
       return size;
