@@ -80,6 +80,7 @@ exec(char *path, char **argv)
     if(argc >= MAXARG)
       goto bad;
     // push all argument
+    // for alignemnt
     sp = (sp - (strlen(argv[argc]) + 1)) & ~3;
     if(copyout(pgdir, sp, argv[argc], strlen(argv[argc]) + 1) < 0)
       goto bad;

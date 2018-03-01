@@ -549,15 +549,18 @@ int dump(int pid, void *addr, void *buffer, int size)
     if(p->pid == pid)
     {
       pde_t *pgaddr;
-      uint saddr = *((uint*)addr);
-      while( saddr < size )
-      {
-        pgaddr = walkpgdir(p->pgdir, (void*) saddr, 0);
-        uint ptr = PTE_ADDR(*pgaddr);
+      pgaddr = walkpgdir(p->pgdir, (void*) addr, 0);
+      uint ptr = PTE_ADDR(*pgaddr);
+      memmove( buffer, (void*) P2V(ptr), size );
+      // while( saddr < size )
+      // {
+      //   pgaddr = walkpgdir(p->pgdir, (void*) saddr, 0);
+      //   uint ptr = PTE_ADDR(*pgaddr);
         
-        memmove( buffer, (void*) P2V(ptr), size );
-        saddr += pgsize;
-      } 
+      //   memmove( buffer, (void*) P2V(ptr), size );
+      //   saddr += pgsize;
+      // } 
+
       release(&ptable.lock);
       return size;
     }
