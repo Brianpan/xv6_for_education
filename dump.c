@@ -46,17 +46,18 @@ void dump_mem()
 	// }
 	
 	int s = dump(pid, (void*)&address, (void*)buf, procMemSize);
-	int i=0;
+	printf(1, "Total process size: %d(Bytes)\n", s); 
 	
+	int i= 0;
 	for(i=0;i<procMemSize/4;i++)
 	{
 		if(i%4 == 0)
 		{
 			printf(1, "\n");
-			cprintf("%08x: ", address);
+			printf(1, "%x: ", address);
 		}
 		int a = *(int*)(buf+i*4);
-		cprintf("%08x  ", a);
+		printf(1, "%x  ", a);
 		address += 4;
 	}
 }
