@@ -53,16 +53,12 @@ void dump_mem()
 		if(i%4 == 0)
 		{
 			printf(1, "\n");
-			printf(1, "0x%08x: ", address);
+			cprintf("%08x: ", address);
 		}
 		int a = *(int*)(buf+i*4);
-		printf(1, "0x%08x  ", a);
+		cprintf("%08x  ", a);
 		address += 4;
 	}
-
-	printf(1, "int return from dump: %d", s);
-
-	
 }
 
 
