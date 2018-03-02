@@ -576,37 +576,37 @@ int getprocinfo(int pid, void *up)
 
   for(p=ptable.proc; p< &ptable.proc[NPROC];p++)
   {
-    // if(p->pid == pid)
-    // {
+    if(p->pid == pid)
+    {
       struct uproc *uptr = (struct uproc*) up;
       uptr->pid = p->pid;
-      // memmove(uptr->name, p->name, 16);
-      // uptr->ppid = p->parent ? p->parent->pid : -1;
-      // uptr->sz = p->sz;
-      // up->state = p->state; 
+      memmove(uptr->name, p->name, 16);
+      uptr->ppid = p->parent ? p->parent->pid : -1;
+      uptr->sz = p->sz;
+      up->state = p->state; 
       
-      // switch(p->state)
-      // {
-      //   case UNUSED: up->state = UUNUSED;
-      //                break;
-      //   case EMBRYO: up->state = UEMBRYO;
-      //                break; 
-      //   case SLEEPING: up->state = USLEEPING;
-      //                break;
-      //   case RUNNABLE: up->state = URUNNABLE;
-      //                break;
-      //   case RUNNING: up->state = URUNNING;
-      //                break;
-      //   case ZOMBIE: up->state = UZOMBIE;
-      //                break;
-      // }
+      switch(p->state)
+      {
+        case UNUSED: uptr->state = UUNUSED;
+                     break;
+        case EMBRYO: uptr->state = UEMBRYO;
+                     break; 
+        case SLEEPING: uptr->state = USLEEPING;
+                     break;
+        case RUNNABLE: uptr->state = URUNNABLE;
+                     break;
+        case RUNNING: uptr->state = URUNNING;
+                     break;
+        case ZOMBIE: uptr->state = UZOMBIE;
+                     break;
+      }
 
-      // uptr->state = p->state;
-      // uptr->killed = p->killed;
-      // uptr->waiting = p->chan ? 1 : 0;
+      uptr->state = p->state;
+      uptr->killed = p->killed;
+      uptr->waiting = p->chan ? 1 : 0;
       release(&ptable.lock);
       return 1;
-    // }
+    }
   }
   release(&ptable.lock);
   return -1;

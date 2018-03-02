@@ -16,7 +16,11 @@ void ls_process()
   if(getprocinfo(pid, pstruct_size, (void*)pstat) < 0)
     printf(1, "syscall err");
 
-  printf(1, "Process id: %d", pstat->pid);
+  printf("1", "pname | pid | ppid | msize | pstate | iswait | killed \n");
+  printf(1, "%s | ", pstat->name);
+  printf(1, "%d | ", pstat->pid);
+  printf(1, "%d | ", pstat->ppid);
+  printf(1, "%d | ", pstat->sz);
 }
 
 int main(int argc, char* argv[])
