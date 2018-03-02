@@ -9,3 +9,14 @@ struct stat {
   short nlink; // Number of links to file
   uint size;   // Size of file in bytes
 };
+
+// define user process stat
+struct uproc {
+  char name[16];
+  int pid;
+  int ppid;
+  uint sz;                     // Size of process memory (bytes)
+  enum procstate state;        // Process state
+  int killed;				   // If non-zero, have been killed
+  int waiting;                 // If non-zero, sleeping on chan
+};

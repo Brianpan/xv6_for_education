@@ -566,3 +566,27 @@ int dump(int pid, void *addr, void *buffer, int size)
   release(&ptable.lock);
   return -1;
 }
+
+// sys get info
+int getprocinfo(int pid, uproc *up)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+
+  for(p=ptable.proc; p< &ptable.proc[NPROC];p++)
+  {
+    if(p->pid == pid)
+    {
+      up->pid = p->pid;
+      memcpy(up->name, p->name, 16);
+      up->ppid = p->parent ? p->parent->pid : -1;
+      up->sz = p->sz;
+      up->state = p->state;
+      up->killed = p->killed;
+      up->waiting = p->chan ? 1 : 0;
+
+      return 1;
+    }
+  }
+  return -1;
+}

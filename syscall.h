@@ -22,3 +22,4 @@
 #define SYS_close  21
 // new sys call
 #define SYS_dump   22
+#define SYS_getprocinfo 23

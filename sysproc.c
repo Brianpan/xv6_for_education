@@ -102,3 +102,14 @@ sys_dump(void)
 
   return dump(pid, address, buf, size);
 }
+// sys getprocinfo
+int
+sys_getprocinfo(void)
+{
+  int pid;
+  uproc *up;
+  if( argint(0, &pid) < 0 || argptr(1, &up, sizeof(uproc)) < 0 )
+    return -1;
+
+  return getprocinfo(pid, uproc);
+}
