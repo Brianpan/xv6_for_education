@@ -600,7 +600,7 @@ int getprocinfo(int pid, void *up)
                      break;
       }
 
-      uptr->state = p->state;
+      // uptr->state = p->state;
       uptr->killed = p->killed;
       uptr->waiting = p->chan ? 1 : 0;
       release(&ptable.lock);

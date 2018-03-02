@@ -21,6 +21,23 @@ void ls_process()
   printf(1, "%d | ", pstat->pid);
   printf(1, "%d | ", pstat->ppid);
   printf(1, "%d | ", pstat->sz);
+  switch(pstat->state)
+  {
+    case UUNUSED: printf(1, "%s | ", "UNUSED");
+                 break;
+    case UEMBRYO: printf(1, "%s | ", "EMBRYO");
+                 break; 
+    case USLEEPING: printf(1, "%s | ", "SLEEPING");
+                 break;
+    case URUNNABLE: printf(1, "%s | ", "UEMBRYO");
+                 break;
+    case URUNNING: printf(1, "%s | ", "RUNNING");
+                 break;
+    case UZOMBIE: printf(1, "%s | ", "ZOMBIE");
+                 break;
+  }
+  printf(1, "%d | ", pstat->waiting);
+  printf(1, "%d\n", pstat->killed);
 }
 
 int main(int argc, char* argv[])
