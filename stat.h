@@ -11,14 +11,14 @@ struct stat {
 };
 
 // define user process stat
-enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+enum uprocstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 struct uproc {
   char name[16];
   int pid;
   int ppid;
   uint sz;                     // Size of process memory (bytes)
-  enum procstate state;        // Process state
+  enum uprocstate state;        // Process state
   int killed;				   // If non-zero, have been killed
   int waiting;                 // If non-zero, sleeping on chan
 };
