@@ -107,9 +107,9 @@ int
 sys_getprocinfo(void)
 {
   int pid;
-  uproc *up;
-  if( argint(0, &pid) < 0 || argptr(1, (char **) &up, sizeof(uproc)) < 0 )
+  struct uproc *up;
+  if( argint(0, &pid) < 0 || argptr(1, (char **) &up, sizeof(struct uproc)) < 0 )
     return -1;
 
-  return getprocinfo(pid, (uproc *)up);
+  return getprocinfo(pid, (struct uproc *)up);
 }
