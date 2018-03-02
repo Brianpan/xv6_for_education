@@ -11,7 +11,6 @@ void dump_mem()
   	/* We don't have a good way to list all pids in the system
     so forking a new process works for testing */ 
 	uint procMemSize = (uint) sbrk(0);
-
 	uint pid = fork();
 
 	if(pid == 0)
@@ -30,13 +29,41 @@ void dump_mem()
 
 	// VA is from 0 to p->sz
 	// based on allouvm -> mappages VA is the oldsz ( a = PGROUNDUP(oldsz); )
+	int reachText = 1;
+	int reachGuard = 0;
+	int reachStack = 0;
+	int reachHeap =0;
 	while(  procMemSize > 0 )
 	{
 		memset(buf, 0, PGSIZE);
-		if( PGSIZE != dump(pid, (void*) address, (void*)buf, PGSIZE) )
+		int flag = dump(pid, (void*) address, (void*)buf, PGSIZE);
+
+		if(  flag < 0 )
 			printf(1, "size not matched!");
+		// define which part is Text, Guard Page, Stack, Heap
+		if(reachText == 1)
+		{
+			printf(1, "\n-------Text Page--------\n");
+			reachText = 0;
+		}
+		else if(reachGuard == 0 && flag == 1)
+		{
+			printf(1, "\n-------Guard Page--------\n");
+			reachGuard = 1;
+		}
+		else if(reachGuard == 1 && flag == 0)
+		{
+			printf(1, "\n-------Guard Page End User Stack Page--------\n");
+			reachGuard = 0;
+			reachStack = 1;
+		}
+		else if(reachStack == 1 && flag == 0)
+		{
+			printf(1, "\n-------User Stack End Heap Page--------\n");
+			reachStack = 0;
+		}
+		printf(1, "\n");
 		
-		printf(1, "\n\n---------------\n\n");
 		// print the address
 		int i;
 		for(i=0;i<PGSIZE/4;i++)
@@ -55,6 +82,7 @@ void dump_mem()
 		// increment
 		procMemSize -= PGSIZE;
 	}
+	printf(1, "\n");
 }
 
 

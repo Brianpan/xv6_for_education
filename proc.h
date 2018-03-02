@@ -10,6 +10,7 @@ struct cpu {
   struct proc *proc;           // The process running on this cpu or null
 };
 
+// for multi process
 extern struct cpu cpus[NCPU];
 extern int ncpu;
 
@@ -35,7 +36,7 @@ struct context {
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 // Per-process state
-struct proc {
+struct  proc {
   uint sz;                     // Size of process memory (bytes)
   pde_t* pgdir;                // Page table
   char *kstack;                // Bottom of kernel stack for this process

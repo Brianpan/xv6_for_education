@@ -60,6 +60,7 @@ start32:
   orl     $(CR4_PSE), %eax
   movl    %eax, %cr4
   # Use entrypgdir as our initial page table
+  # Point to current stack position
   movl    (start-12), %eax
   movl    %eax, %cr3
   # Turn on paging.

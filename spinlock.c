@@ -117,6 +117,7 @@ popcli(void)
   if(--mycpu()->ncli < 0)
     panic("popcli");
   if(mycpu()->ncli == 0 && mycpu()->intena)
+    // re-enable interupt
     sti();
 }
 

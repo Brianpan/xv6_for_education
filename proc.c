@@ -435,7 +435,7 @@ sleep(void *chan, struct spinlock *lk)
   // (wakeup runs with ptable.lock locked),
   // so it's okay to release lk.
   if(lk != &ptable.lock){  //DOC: sleeplock0
-    acquire(&ptable.lock);  //DOC: sleeplock1
+    acquire(&ptable.lock);  //DOC: sleeplock1 second lock
     release(lk);
   }
   // Go to sleep.
@@ -549,11 +549,18 @@ int dump(int pid, void *addr, void *buffer, int size)
     {
       pde_t *pgaddr;
       pgaddr = walkpgdir(p->pgdir, (void*) addr, 0);
+      uint flags = PTE_FLAGS(*pgaddr);
+      uint notGuard = (flags & PTE_U) >> 2;
+
       uint ptr = PTE_ADDR(*pgaddr);
       memmove( buffer, (void*) P2V(ptr), size );
 
       release(&ptable.lock);
-      return size;
+      // check is guard page or not
+      if(notGuard == 1)
+        return 0;
+      else
+        return 1;
     }
   }
   release(&ptable.lock);
