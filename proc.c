@@ -569,7 +569,7 @@ int dump(int pid, void *addr, void *buffer, int size)
 }
 
 // sys get info
-int getprocinfo(int pid, struct uproc *up)
+int getprocinfo(int pid, void *up)
 {
   struct proc *p;
   acquire(&ptable.lock);
@@ -578,10 +578,11 @@ int getprocinfo(int pid, struct uproc *up)
   {
     if(p->pid == pid)
     {
-      up->pid = p->pid;
-      memmove(up->name, p->name, 16);
-      up->ppid = p->parent ? p->parent->pid : -1;
-      up->sz = p->sz;
+      uproc *uptr = (uproc*) up;
+      uptr->pid = p->pid;
+      memmove(uptr->name, p->name, 16);
+      uptr->ppid = p->parent ? p->parent->pid : -1;
+      uptr->sz = p->sz;
       // up->state = p->state; 
       // switch(p->state)
       // {
@@ -599,9 +600,9 @@ int getprocinfo(int pid, struct uproc *up)
       //                break;
       // }
 
-      up->state = p->state;
-      up->killed = p->killed;
-      up->waiting = p->chan ? 1 : 0;
+      uptr->state = p->state;
+      uptr->killed = p->killed;
+      uptr->waiting = p->chan ? 1 : 0;
 
       return 1;
     }

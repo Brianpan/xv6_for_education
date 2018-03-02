@@ -6,7 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-#include "stat.h"
+
 
 int
 sys_fork(void)
@@ -107,10 +107,10 @@ sys_dump(void)
 int
 sys_getprocinfo(void)
 {
-  int pid;
-  struct uproc *up;
-  if( argint(0, &pid) < 0 || argptr(1, (char **) &up, sizeof(struct uproc)) < 0 )
+  int pid, size;
+  char *up;
+  if( argint(0, &pid) < 0 || argint(1, &size) < 0 || argptr(1, &up, size) < 0 )
     return -1;
 
-  return getprocinfo(pid, (struct uproc *)up);
+  return getprocinfo(pid, (void *)up);
 }

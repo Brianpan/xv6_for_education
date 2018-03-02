@@ -9,10 +9,11 @@ void ls_process()
 {
   char *buffer = malloc(PGSIZE);
   memset(buffer, 0, PGSIZE);
-
-  struct uproc *pstat = malloc(sizeof(struct uproc));
+  uint pstruct_size = sizeof(struct uproc);
+  struct uproc *pstat = malloc(pstruct_size);
   int pid = 0;
-  if(getprocinfo(pid, pstat) < 0)
+  
+  if(getprocinfo(pid, pstruct_size, (void*)pstat) < 0)
     printf(1, "syscall err");
 
   printf(1, "Process id: %d", pstat->pid);
