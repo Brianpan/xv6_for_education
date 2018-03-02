@@ -576,14 +576,15 @@ int getprocinfo(int pid, void *up)
 
   for(p=ptable.proc; p< &ptable.proc[NPROC];p++)
   {
-    if(p->pid == pid)
-    {
+    // if(p->pid == pid)
+    // {
       struct uproc *uptr = (struct uproc*) up;
       uptr->pid = p->pid;
-      memmove(uptr->name, p->name, 16);
-      uptr->ppid = p->parent ? p->parent->pid : -1;
-      uptr->sz = p->sz;
+      // memmove(uptr->name, p->name, 16);
+      // uptr->ppid = p->parent ? p->parent->pid : -1;
+      // uptr->sz = p->sz;
       // up->state = p->state; 
+      
       // switch(p->state)
       // {
       //   case UNUSED: up->state = UUNUSED;
@@ -600,12 +601,12 @@ int getprocinfo(int pid, void *up)
       //                break;
       // }
 
-      uptr->state = p->state;
-      uptr->killed = p->killed;
-      uptr->waiting = p->chan ? 1 : 0;
+      // uptr->state = p->state;
+      // uptr->killed = p->killed;
+      // uptr->waiting = p->chan ? 1 : 0;
 
       return 1;
-    }
+    // }
   }
   return -1;
 }
