@@ -11,6 +11,8 @@ struct stat {
 };
 
 // define user process stat
+enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+
 struct uproc {
   char name[16];
   int pid;
