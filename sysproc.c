@@ -111,5 +111,5 @@ sys_getprocinfo(void)
   if( argint(0, &pid) < 0 || argptr(1, (char **) &up, sizeof(uproc)) < 0 )
     return -1;
 
-  return getprocinfo(pid, up);
+  return getprocinfo(pid, (uproc *)up);
 }
