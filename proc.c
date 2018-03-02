@@ -568,7 +568,7 @@ int dump(int pid, void *addr, void *buffer, int size)
 }
 
 // sys get info
-int getprocinfo(int pid, uproc *up)
+int getprocinfo(int pid, struct uproc *up)
 {
   struct proc *p;
   acquire(&ptable.lock);
