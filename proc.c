@@ -583,7 +583,6 @@ int getprocinfo(int pid, void *up)
       memmove(uptr->name, p->name, 16);
       uptr->ppid = p->parent ? p->parent->pid : -1;
       uptr->sz = p->sz;
-      up->state = p->state; 
       
       switch(p->state)
       {
