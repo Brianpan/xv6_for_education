@@ -581,10 +581,10 @@ int getprocinfo(int pid, struct uproc *up)
       memmove(up->name, p->name, 16);
       up->ppid = p->parent ? p->parent->pid : -1;
       up->sz = p->sz;
-      up->state = p->state; 
+      // up->state = p->state; 
       // switch(p->state)
       // {
-      //   case UNUSED: up->state = UNUSED;
+      //   case UNUSED: up->state = UUNUSED;
       //                break;
       //   case EMBRYO: up->state = UEMBRYO;
       //                break; 
@@ -592,7 +592,6 @@ int getprocinfo(int pid, struct uproc *up)
       //                break;
       //   case RUNNABLE: up->state = URUNNABLE;
       //                break;
-
       //   case RUNNING: up->state = URUNNING;
       //                break;
       //   case ZOMBIE: up->state = UZOMBIE;
