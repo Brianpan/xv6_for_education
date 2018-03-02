@@ -32,7 +32,6 @@ void dump_mem()
 	int reachText = 1;
 	int reachGuard = 0;
 	int reachStack = 0;
-	int reachHeap =0;
 	while(  procMemSize > 0 )
 	{
 		memset(buf, 0, PGSIZE);
