@@ -26,7 +26,7 @@ int sleep(int);
 int uptime(void);
 // dump
 int dump(int, void*, void*, int);
-int getprocinfo(int, uproc*);
+int getprocinfo(int, struct uproc*);
 
 // ulib.c
 int stat(char*, struct stat*);
