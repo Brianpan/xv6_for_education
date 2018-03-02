@@ -11,7 +11,7 @@ struct stat {
 };
 
 // define user process stat
-enum uprocstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+enum uprocstate { UUNUSED, UEMBRYO, USLEEPING, URUNNABLE, URUNNING, UZOMBIE };
 
 struct uproc {
   char name[16];

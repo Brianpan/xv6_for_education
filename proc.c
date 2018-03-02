@@ -581,6 +581,23 @@ int getprocinfo(int pid, uproc *up)
       memcpy(up->name, p->name, 16);
       up->ppid = p->parent ? p->parent->pid : -1;
       up->sz = p->sz;
+      switch(p->state)
+      {
+        case UNUSED: up->state = UUNUSED;
+                     break;
+        case EMBRYO: up->state = UEMBRYO;
+                     break; 
+        case SLEEPING: up->state = USLEEPING;
+                     break;
+        case RUNNABLE: up->state = URUNNABLE;
+                     break;
+
+        case RUNNING: up->state = URUNNING;
+                     break;
+        case ZOMBIE: up->state = UZOMBIE;
+                     break;
+      }
+
       up->state = p->state;
       up->killed = p->killed;
       up->waiting = p->chan ? 1 : 0;
