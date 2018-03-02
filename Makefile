@@ -135,7 +135,7 @@ tags: $(OBJS) entryother.S _init
 
 vectors.S: vectors.pl
 	perl vectors.pl > vectors.S
-
+# usys linker links to syscall if remove it it will break
 ULIB = ulib.o usys.o printf.o umalloc.o
 
 _%: %.o $(ULIB)

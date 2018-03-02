@@ -10,7 +10,7 @@ void ls_process()
   char *buffer = malloc(PGSIZE);
   memset(buffer, 0, PGSIZE);
 
-  uproc *pstat = malloc(sizeof(uproc));
+  struct uproc *pstat = malloc(sizeof(struct uproc));
   int pid = 0;
   if(getprocinfo(pid, pstat) < 0)
     printf(1, "syscall err");
