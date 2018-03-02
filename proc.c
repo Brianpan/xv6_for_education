@@ -578,7 +578,7 @@ int getprocinfo(int pid, void *up)
   {
     if(p->pid == pid)
     {
-      struct uproc *uptr = (uproc*) up;
+      struct uproc *uptr = (struct uproc*) up;
       uptr->pid = p->pid;
       memmove(uptr->name, p->name, 16);
       uptr->ppid = p->parent ? p->parent->pid : -1;

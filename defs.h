@@ -122,7 +122,7 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 int             dump(int, void*, void*, int);
-int 			getprocinfo(int, struct uproc*);
+int 			getprocinfo(int, void*);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
