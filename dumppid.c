@@ -93,6 +93,6 @@ int main(int argc, char* argv[])
 	}
 
 	int pid = atoi(argv[1]);
-	dump_pid_mem();
+	dump_pid_mem(pid);
 	exit();
 }
