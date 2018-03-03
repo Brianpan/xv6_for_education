@@ -581,29 +581,29 @@ int getprocinfo(int pid, void *up)
     {
       struct uproc *uptr = (struct uproc*) up;
       uptr->pid = p->pid;
-      // memmove(uptr->name, p->name, 16);
-      // uptr->ppid = p->parent ? p->parent->pid : -1;
-      // uptr->sz = p->sz;
+      memmove(uptr->name, p->name, 16);
+      uptr->ppid = p->parent ? p->parent->pid : -1;
+      uptr->sz = p->sz;
       
-      // switch(p->state)
-      // {
-      //   case UNUSED: uptr->state = UUNUSED;
-      //                break;
-      //   case EMBRYO: uptr->state = UEMBRYO;
-      //                break; 
-      //   case SLEEPING: uptr->state = USLEEPING;
-      //                break;
-      //   case RUNNABLE: uptr->state = URUNNABLE;
-      //                break;
-      //   case RUNNING: uptr->state = URUNNING;
-      //                break;
-      //   case ZOMBIE: uptr->state = UZOMBIE;
-      //                break;
-      // }
+      switch(p->state)
+      {
+        case UNUSED: uptr->state = UUNUSED;
+                     break;
+        case EMBRYO: uptr->state = UEMBRYO;
+                     break; 
+        case SLEEPING: uptr->state = USLEEPING;
+                     break;
+        case RUNNABLE: uptr->state = URUNNABLE;
+                     break;
+        case RUNNING: uptr->state = URUNNING;
+                     break;
+        case ZOMBIE: uptr->state = UZOMBIE;
+                     break;
+      }
 
-      // // uptr->state = p->state;
-      // uptr->killed = p->killed;
-      // uptr->waiting = p->chan ? 1 : 0;
+      // uptr->state = p->state;
+      uptr->killed = p->killed;
+      uptr->waiting = p->chan ? 1 : 0;
       release(&ptable.lock);
       return 1;
     }
