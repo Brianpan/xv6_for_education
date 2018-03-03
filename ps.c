@@ -14,10 +14,9 @@ void ls_process()
   printf(1, "pname | pid | ppid | msize | pstate | iswait | killed \n");
   for(i=0;i<NPROC;i++)
   {
+    memset(pstat, 0, pstruct_size);
     
     pid = getpid2(i);
-    printf(1, "[[%d \n", pid);
-    
     if(pid <= 0)
       continue;
 
@@ -28,12 +27,12 @@ void ls_process()
       printf(1, "syscall err");
       break;
     }
-    else if(flag==0)
+    else if(flag == 0)
     {
-      printf(1, "%s | ", pstat->name);
-      printf(1, "%d | ", pstat->pid);
-      printf(1, "%s | ", "UNUSED\n");
-      memset(pstat, 0, pstruct_size);
+      // printf(1, "%s | ", pstat->name);
+      // printf(1, "%d | ", pstat->pid);
+      // printf(1, "%s | ", "UNUSED\n");
+      // memset(pstat, 0, pstruct_size);
       continue;
     }
     // printing process
@@ -41,7 +40,7 @@ void ls_process()
     printf(1, "%s | ", pstat->name);
     printf(1, "%d | ", pstat->pid);
     printf(1, "%d | ", pstat->ppid);
-    printf(1, "%d | \n", pstat->sz);
+    printf(1, "%d | ", pstat->sz);
     switch(pstat->state)
     {
       case UUNUSED: printf(1, "%s | ", "UNUSED");
@@ -59,7 +58,6 @@ void ls_process()
     }
     printf(1, "%d | ", pstat->waiting);
     printf(1, "%d\n", pstat->killed);
-    memset(pstat, 0, pstruct_size);
   }
 
   free(pstat);
