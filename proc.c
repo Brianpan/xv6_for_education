@@ -573,11 +573,10 @@ int getprocinfo(int pid, void *up)
 {
   struct proc *p;
   acquire(&ptable.lock);
-  int idx = 0;
 
   for(p=ptable.proc; p< &ptable.proc[NPROC];p++)
   {
-    if(idx == pid)
+    if(p->pid == pid)
     {
       if(p->state != RUNNING)
       {
@@ -586,9 +585,9 @@ int getprocinfo(int pid, void *up)
       }
       struct uproc *uptr = (struct uproc*) up;
       uptr->pid = p->pid;
-      // memmove(uptr->name, p->name, 16);
-      // uptr->ppid = p->parent ? p->parent->pid : -1;
-      // uptr->sz = p->sz;
+      memmove(uptr->name, p->name, 16);
+      uptr->ppid = p->parent ? p->parent->pid : -1;
+      uptr->sz = p->sz;
       
       switch(p->state)
       {
@@ -606,12 +605,12 @@ int getprocinfo(int pid, void *up)
                      break;
       }
 
-      // uptr->killed = p->killed;
-      // uptr->waiting = p->chan ? 1 : 0;
+      uptr->killed = p->killed;
+      uptr->waiting = p->chan ? 1 : 0;
       release(&ptable.lock);
-      return idx;
+      
+      return 1;
     }
-    idx++;
   }
   release(&ptable.lock);
   return -1;
