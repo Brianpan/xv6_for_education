@@ -8,12 +8,13 @@ void ls_process()
 {
   uint pstruct_size = sizeof(struct uproc);
   // int pid;
-  
+  struct uproc *pstat = malloc(pstruct_size);
   int i = 0;
+
   printf(1, "pname | pid | ppid | msize | pstate | iswait | killed \n");
   for(i=0;i<NPROC;i++)
   {
-    struct uproc *pstat = malloc(pstruct_size);
+    
     // get pid
     // pid = getpid2(i);
 
@@ -26,7 +27,7 @@ void ls_process()
       break;
     }
     else if(flag==0)
-      continue
+      continue;
 
     // printing process
     
@@ -51,9 +52,9 @@ void ls_process()
     // }
     // printf(1, "%d | ", pstat->waiting);
     // printf(1, "%d\n", pstat->killed);
-    
-    free(pstat);
   }
+  
+  free(pstat);
 }
 
 int main(int argc, char* argv[])
