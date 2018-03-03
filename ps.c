@@ -7,7 +7,7 @@
 void ls_process()
 {
   uint pstruct_size = sizeof(struct uproc);
-  // int pid;
+  int pid;
   
   int i = 0;
   struct uproc *pstat = malloc(pstruct_size);
