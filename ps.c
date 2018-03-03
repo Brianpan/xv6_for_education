@@ -16,7 +16,7 @@ void ls_process()
   {
     
     pid = getpid2(i);
-    printf("[[%d \n", pid);
+    printf(1, "[[%d \n", pid);
     continue;
 
     // printing
