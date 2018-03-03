@@ -583,7 +583,7 @@ int getprocinfo(int pid, struct uproc *up)
       //   release(&ptable.lock);
       //   return 0;
       // }
-      up->pid = u->pid;
+      up->pid = p->pid;
       up->ppid = p->parent ? p->parent->pid : -1;
       switch(p->state)
       {
