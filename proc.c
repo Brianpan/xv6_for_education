@@ -584,7 +584,7 @@ int getprocinfo(int pid, void *up)
         return 0;
       }
       struct uproc *uptr = (struct uproc*) up;
-      uptr->pid = p->pid;
+      uptr->pid = 1234;
       memmove(uptr->name, p->name, 16);
       // uptr->ppid = p->parent ? p->parent->pid : -1;
       uptr->sz = p->sz;
