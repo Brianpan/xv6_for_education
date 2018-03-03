@@ -20,7 +20,7 @@ void ls_process()
 
     // printf(1, "%d \n", pid);
     // printing
-    if(i==0)
+    if(i<5)
       continue;
 
     int flag = getprocinfo(i, pstruct_size, (void*)pstat);

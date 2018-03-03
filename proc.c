@@ -609,7 +609,7 @@ int getprocinfo(int pid, void *up)
       // uptr->killed = p->killed;
       // uptr->waiting = p->chan ? 1 : 0;
       release(&ptable.lock);
-      return 1;
+      return idx;
     }
     idx++;
   }
