@@ -17,7 +17,9 @@ void ls_process()
     
     pid = getpid2(i);
     printf(1, "[[%d \n", pid);
-    continue;
+    
+    if(pid <= 0)
+      continue;
 
     // printing
     int flag = getprocinfo(pid, pstruct_size, (void*)pstat);
