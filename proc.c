@@ -573,10 +573,11 @@ int getprocinfo(int pid, void *up)
 {
   struct proc *p;
   acquire(&ptable.lock);
+  int idx = 0;
 
   for(p=ptable.proc; p< &ptable.proc[NPROC];p++)
   {
-    if(p->pid == pid)
+    if(idx == pid)
     {
       struct uproc *uptr = (struct uproc*) up;
       uptr->pid = p->pid;
@@ -606,6 +607,7 @@ int getprocinfo(int pid, void *up)
       release(&ptable.lock);
       return 1;
     }
+    idx++;
   }
   release(&ptable.lock);
   return -1;
@@ -621,6 +623,7 @@ int getpid2(int id)
   {
     if(iter == id)
     {
+      if(p->state == )
       int pid = p->pid;
       release(&ptable.lock);
       return pid;

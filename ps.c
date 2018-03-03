@@ -15,11 +15,11 @@ void ls_process()
   {
     struct uproc *pstat = malloc(pstruct_size);
     // get pid
-    pid = getpid2(i);
+    // pid = getpid2(i);
 
-    printf(1, "%d \n", pid);
+    // printf(1, "%d \n", pid);
     // printing
-    if(getprocinfo(pid, pstruct_size, (void*)pstat) < 0)
+    if(getprocinfo(i, pstruct_size, (void*)pstat) < 0)
     {  
       printf(1, "syscall err");
       break;
