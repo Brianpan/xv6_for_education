@@ -19,11 +19,15 @@ void ls_process()
 
     // printf(1, "%d \n", pid);
     // printing
-    if(getprocinfo(i, pstruct_size, (void*)pstat) < 0)
+    int flag = getprocinfo(i, pstruct_size, (void*)pstat);
+    if( flag < 0)
     {  
       printf(1, "syscall err");
       break;
     }
+    else if(flag==0)
+      continue
+
     // printing process
     
     // printf(1, "%s | ", pstat->name);
