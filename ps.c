@@ -20,6 +20,9 @@ void ls_process()
 
     // printf(1, "%d \n", pid);
     // printing
+    if(i==0)
+      continue;
+
     int flag = getprocinfo(i, pstruct_size, (void*)pstat);
     if( flag < 0)
     {  
@@ -35,22 +38,22 @@ void ls_process()
     printf(1, "flag: %d", flag);
     printf(1, "pid: %d | \n", pstat->pid);
     // printf(1, "%d | ", pstat->ppid);
-    // printf(1, "%d | ", pstat->sz);
-    switch(pstat->state)
-    {
-      case UUNUSED: printf(1, "%s | ", "UNUSED");
-                   break;
-      case UEMBRYO: printf(1, "%s | ", "EMBRYO");
-                   break; 
-      case USLEEPING: printf(1, "%s | ", "SLEEPING");
-                   break;
-      case URUNNABLE: printf(1, "%s | ", "UEMBRYO");
-                   break;
-      case URUNNING: printf(1, "%s | ", "RUNNING");
-                   break;
-      case UZOMBIE: printf(1, "%s | ", "ZOMBIE");
-                   break;
-    }
+    printf(1, "%d | ", pstat->sz);
+    // switch(pstat->state)
+    // {
+    //   case UUNUSED: printf(1, "%s | ", "UNUSED");
+    //                break;
+    //   case UEMBRYO: printf(1, "%s | ", "EMBRYO");
+    //                break; 
+    //   case USLEEPING: printf(1, "%s | ", "SLEEPING");
+    //                break;
+    //   case URUNNABLE: printf(1, "%s | ", "UEMBRYO");
+    //                break;
+    //   case URUNNING: printf(1, "%s | ", "RUNNING");
+    //                break;
+    //   case UZOMBIE: printf(1, "%s | ", "ZOMBIE");
+    //                break;
+    // }
     // printf(1, "%d | ", pstat->waiting);
     // printf(1, "%d\n", pstat->killed);
     memset(pstat, 0, pstruct_size);
