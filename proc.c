@@ -569,7 +569,7 @@ int dump(int pid, void *addr, void *buffer, int size)
 }
 
 // sys get info
-int getprocinfo(int pid, void *up)
+int getprocinfo(int pid, struct uproc *up)
 {
   struct proc *p;
   acquire(&ptable.lock);
@@ -583,30 +583,31 @@ int getprocinfo(int pid, void *up)
         release(&ptable.lock);
         return 0;
       }
-      struct uproc *uptr = (struct uproc*) up;
-      ((struct uproc*) up)->pid = 1234;
-      memmove(uptr->name, p->name, 16);
+      up->pid = 1234;
+      // struct uproc *uptr = (struct uproc*) up;
+      // ((struct uproc*) up)->pid = 1234;
+      // memmove(uptr->name, p->name, 16);
       // uptr->ppid = p->parent ? p->parent->pid : -1;
-      uptr->sz = p->sz;
+      // uptr->sz = p->sz;
       
-      switch(p->state)
-      {
-        case UNUSED: uptr->state = UUNUSED;
-                     break;
-        case EMBRYO: uptr->state = UEMBRYO;
-                     break; 
-        case SLEEPING: uptr->state = USLEEPING;
-                     break;
-        case RUNNABLE: uptr->state = URUNNABLE;
-                     break;
-        case RUNNING: uptr->state = URUNNING;
-                     break;
-        case ZOMBIE: uptr->state = UZOMBIE;
-                     break;
-      }
+      // switch(p->state)
+      // {
+      //   case UNUSED: uptr->state = UUNUSED;
+      //                break;
+      //   case EMBRYO: uptr->state = UEMBRYO;
+      //                break; 
+      //   case SLEEPING: uptr->state = USLEEPING;
+      //                break;
+      //   case RUNNABLE: uptr->state = URUNNABLE;
+      //                break;
+      //   case RUNNING: uptr->state = URUNNING;
+      //                break;
+      //   case ZOMBIE: uptr->state = UZOMBIE;
+      //                break;
+      // }
 
-      uptr->killed = p->killed;
-      uptr->waiting = p->chan ? 1 : 0;
+      // uptr->killed = p->killed;
+      // uptr->waiting = p->chan ? 1 : 0;
       release(&ptable.lock);
       
       return 1;
