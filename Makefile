@@ -176,6 +176,7 @@ UPROGS=\
 	_zombie\
 	_dump\
 	_ps\
+	_dumppid\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

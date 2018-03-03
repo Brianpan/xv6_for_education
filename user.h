@@ -28,6 +28,7 @@ int uptime(void);
 int dump(int, void*, void*, int);
 int getprocinfo(int, int, struct uproc*);
 int getpid2(int);
+int getprocsize(int);
 
 // ulib.c
 int stat(char*, struct stat*);

@@ -124,7 +124,7 @@ void            yield(void);
 int             dump(int, void*, void*, int);
 int 			getprocinfo(int, struct uproc*);
 int    			getpid2(int);
-
+int 			getprocsize(int);
 // swtch.S
 void            swtch(struct context**, struct context*);
 

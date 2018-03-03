@@ -633,3 +633,21 @@ int getpid2(int id)
   release(&ptable.lock);
   return -1;
 }
+
+int getprocsize(int pid)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+
+  for(p=ptable.proc; p< &ptable.proc[NPROC];p++)
+  {
+    if(p->pid == pid)
+    {
+      release(&ptable.lock);
+      return p->sz;
+    }
+  }
+  
+  release(&ptable.lock);
+  return -1;
+}

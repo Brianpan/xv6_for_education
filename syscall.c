@@ -108,6 +108,7 @@ extern int sys_uptime(void);
 extern int sys_dump(void);
 extern int sys_getprocinfo(void);
 extern int sys_getpid2(void);
+extern int sys_getprocsize(void);
 
 
 static int (*syscalls[])(void) = {
@@ -134,7 +135,8 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_dump]    sys_dump,
 [SYS_getprocinfo] sys_getprocinfo,
-[SYS_getpid2] sys_getpid2
+[SYS_getpid2] sys_getpid2,
+[SYS_getprocsize] sys_getprocsize
 };
 
 void

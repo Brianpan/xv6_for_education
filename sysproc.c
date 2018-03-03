@@ -124,3 +124,13 @@ sys_getpid2(void)
 
   return getpid2(id);
 }
+
+int
+sys_getprocsize(void)
+{
+  int pid;
+  if( argint(0, &id) < 0 )
+    return -1;
+
+  return getprocsize(pid);
+}
