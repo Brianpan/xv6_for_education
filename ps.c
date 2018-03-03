@@ -36,9 +36,9 @@ void ls_process()
     // printing process
     
     printf(1, "%s | ", pstat->name);
-    printf(1, "%d | \n", pstat->pid);
+    printf(1, "%d | ", pstat->pid);
     // printf(1, "%d | ", pstat->ppid);
-    printf(1, "%d | ", pstat->sz);
+    printf(1, "%d | \n", pstat->sz);
     // switch(pstat->state)
     // {
     //   case UUNUSED: printf(1, "%s | ", "UNUSED");
