@@ -7,7 +7,7 @@
 void ls_process()
 {
   uint pstruct_size = sizeof(struct uproc);
-  int pid;
+  // int pid;
   
   int i = 0;
   printf(1, "pname | pid | ppid | msize | pstate | iswait | killed \n");

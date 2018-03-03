@@ -623,7 +623,6 @@ int getpid2(int id)
   {
     if(iter == id)
     {
-      if(p->state == )
       int pid = p->pid;
       release(&ptable.lock);
       return pid;
