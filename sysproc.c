@@ -122,5 +122,5 @@ sys_getpid2(void)
   if( argint(0, &id) < 0 )
     return -1;
 
-  return getpid(id);
+  return getpid2(id);
 }
