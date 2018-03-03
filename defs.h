@@ -123,6 +123,7 @@ void            wakeup(void*);
 void            yield(void);
 int             dump(int, void*, void*, int);
 int 			getprocinfo(int, void*);
+int    			getpid(int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

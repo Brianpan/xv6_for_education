@@ -27,6 +27,7 @@ int uptime(void);
 // dump
 int dump(int, void*, void*, int);
 int getprocinfo(int, int, void*);
+int getpid(int);
 
 // ulib.c
 int stat(char*, struct stat*);

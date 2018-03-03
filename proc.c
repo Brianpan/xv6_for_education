@@ -610,3 +610,24 @@ int getprocinfo(int pid, void *up)
   release(&ptable.lock);
   return -1;
 }
+
+int getpid(int id)
+{
+  int iter = 0;
+  struct proc *p;
+  acquire(&ptable.lock);
+  
+  for(p=ptable.proc; p< &ptable.proc[NPROC];p++)
+  {
+    if(iter == id)
+    {
+      int pid = p->pid;
+      release(&ptable.lock);
+      return pid;
+    }
+    iter++;
+  }
+  
+  release(&ptable.lock);
+  return -1;
+}

@@ -114,3 +114,13 @@ sys_getprocinfo(void)
 
   return getprocinfo(pid, (void *)up);
 }
+
+int
+sys_getpid(void)
+{
+  int id;
+  if( argint(0, &id) < 0 )
+    return -1;
+
+  return getpid(id);
+}
