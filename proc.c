@@ -584,7 +584,7 @@ int getprocinfo(int pid, struct uproc *up)
         return 0;
       }
       up->pid = 1234;
-      up->->ppid = p->parent ? p->parent->pid : -1;
+      up->ppid = p->parent ? p->parent->pid : -1;
       switch(p->state)
       {
         case UNUSED: up->state = UUNUSED;
