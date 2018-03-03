@@ -578,12 +578,12 @@ int getprocinfo(int pid, struct uproc *up)
   {
     if(p->pid == pid)
     {
-      if(p->state != RUNNING)
-      {
-        release(&ptable.lock);
-        return 0;
-      }
-      up->pid = 1234;
+      // if(p->state != RUNNING)
+      // {
+      //   release(&ptable.lock);
+      //   return 0;
+      // }
+      up->pid = u->pid;
       up->ppid = p->parent ? p->parent->pid : -1;
       switch(p->state)
       {

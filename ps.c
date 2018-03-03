@@ -27,14 +27,14 @@ void ls_process()
       printf(1, "syscall err");
       break;
     }
-    else if(flag == 0)
-    {
-      // printf(1, "%s | ", pstat->name);
-      // printf(1, "%d | ", pstat->pid);
-      // printf(1, "%s | ", "UNUSED\n");
-      // memset(pstat, 0, pstruct_size);
-      continue;
-    }
+    // else if(flag == 0)
+    // {
+    //   // printf(1, "%s | ", pstat->name);
+    //   // printf(1, "%d | ", pstat->pid);
+    //   // printf(1, "%s | ", "UNUSED\n");
+    //   // memset(pstat, 0, pstruct_size);
+    //   continue;
+    // }
     // printing process
     
     printf(1, "%s | ", pstat->name);
