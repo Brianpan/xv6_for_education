@@ -18,11 +18,7 @@ void ls_process()
     // get pid
     // pid = getpid2(i);
 
-    // printf(1, "%d \n", pid);
     // printing
-    if(i<5)
-      continue;
-
     int flag = getprocinfo(i, pstruct_size, (void*)pstat);
     if( flag < 0)
     {  
@@ -30,13 +26,17 @@ void ls_process()
       break;
     }
     else if(flag==0)
+    {
+      printf(1, "%s | ", pstat->name);
+      printf(1, "%d | ", pstat->pid);
+      printf(1, "%s | ", "UNUSED\n");
+      memset(pstat, 0, pstruct_size);
       continue;
-
+    }
     // printing process
     
-    // printf(1, "%s | ", pstat->name);
-    printf(1, "flag: %d", flag);
-    printf(1, "pid: %d | \n", pstat->pid);
+    printf(1, "%s | ", pstat->name);
+    printf(1, "%d | \n", pstat->pid);
     // printf(1, "%d | ", pstat->ppid);
     printf(1, "%d | ", pstat->sz);
     // switch(pstat->state)
