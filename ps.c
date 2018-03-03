@@ -20,8 +20,10 @@ void ls_process()
     printf(1, "%d \n", pid);
     // printing
     if(getprocinfo(pid, pstruct_size, (void*)pstat) < 0)
+    {  
       printf(1, "syscall err");
       break;
+    }
     // printing process
     
     printf(1, "%s | ", pstat->name);
