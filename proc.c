@@ -590,21 +590,21 @@ int getprocinfo(int pid, void *up)
       // uptr->ppid = p->parent ? p->parent->pid : -1;
       // uptr->sz = p->sz;
       
-      // switch(p->state)
-      // {
-      //   case UNUSED: uptr->state = UUNUSED;
-      //                break;
-      //   case EMBRYO: uptr->state = UEMBRYO;
-      //                break; 
-      //   case SLEEPING: uptr->state = USLEEPING;
-      //                break;
-      //   case RUNNABLE: uptr->state = URUNNABLE;
-      //                break;
-      //   case RUNNING: uptr->state = URUNNING;
-      //                break;
-      //   case ZOMBIE: uptr->state = UZOMBIE;
-      //                break;
-      // }
+      switch(p->state)
+      {
+        case UNUSED: uptr->state = UUNUSED;
+                     break;
+        case EMBRYO: uptr->state = UEMBRYO;
+                     break; 
+        case SLEEPING: uptr->state = USLEEPING;
+                     break;
+        case RUNNABLE: uptr->state = URUNNABLE;
+                     break;
+        case RUNNING: uptr->state = URUNNING;
+                     break;
+        case ZOMBIE: uptr->state = UZOMBIE;
+                     break;
+      }
 
       // uptr->killed = p->killed;
       // uptr->waiting = p->chan ? 1 : 0;
