@@ -15,7 +15,7 @@ void ls_process()
   for(i=0;i<NPROC;i++)
   {
     // get pid
-    pid = getpid(i);
+    pid = getpid2(i);
 
     // printing
     if(getprocinfo(pid, pstruct_size, (void*)pstat) < 0)

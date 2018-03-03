@@ -23,4 +23,4 @@
 // new sys call
 #define SYS_dump   22
 #define SYS_getprocinfo 23
-#define SYS_getpid 24
+#define SYS_getpid2 24

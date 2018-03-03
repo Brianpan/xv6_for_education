@@ -611,7 +611,7 @@ int getprocinfo(int pid, void *up)
   return -1;
 }
 
-int getpid(int id)
+int getpid2(int id)
 {
   int iter = 0;
   struct proc *p;
@@ -627,7 +627,7 @@ int getpid(int id)
     }
     iter++;
   }
-  
+
   release(&ptable.lock);
   return -1;
 }

@@ -116,7 +116,7 @@ sys_getprocinfo(void)
 }
 
 int
-sys_getpid(void)
+sys_getpid2(void)
 {
   int id;
   if( argint(0, &id) < 0 )
