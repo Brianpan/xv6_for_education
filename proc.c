@@ -580,7 +580,10 @@ int getprocinfo(int pid, void *up)
     if(idx == pid)
     {
       if(p->state == UNUSED)
+      {
+        release(&ptable.lock);
         return 0;
+      }
       struct uproc *uptr = (struct uproc*) up;
       uptr->pid = p->pid;
       memmove(uptr->name, p->name, 16);
