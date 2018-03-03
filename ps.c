@@ -27,7 +27,7 @@ void ls_process()
     // printing process
     
     // printf(1, "%s | ", pstat->name);
-    printf(1, "%d | \n", pstat->pid);
+    printf(1, "%d - %d | \n", i, pstat->pid);
     // printf(1, "%d | ", pstat->ppid);
     // printf(1, "%d | ", pstat->sz);
     // switch(pstat->state)
