@@ -10,11 +10,11 @@ void ls_process()
   // int pid;
   
   int i = 0;
-
+  struct uproc *pstat = malloc(pstruct_size);
   printf(1, "pname | pid | ppid | msize | pstate | iswait | killed \n");
   for(i=0;i<NPROC;i++)
   {
-    struct uproc *pstat = malloc(pstruct_size);
+    
     // get pid
     // pid = getpid2(i);
 
@@ -53,10 +53,10 @@ void ls_process()
     }
     // printf(1, "%d | ", pstat->waiting);
     // printf(1, "%d\n", pstat->killed);
-    free(pstat);
+    memset(pstat, 0, pstruct_size);
   }
 
-  
+  free(pstat);
 }
 
 int main(int argc, char* argv[])
