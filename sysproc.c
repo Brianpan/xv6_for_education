@@ -112,7 +112,7 @@ sys_getprocinfo(void)
   if( argint(0, &pid) < 0 || argint(1, &size) < 0 || argptr(1, &up, size) < 0 )
     return -1;
 
-  return getprocinfo(pid, up);
+  return getprocinfo(pid, (void*)up);
 }
 
 int

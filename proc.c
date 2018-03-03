@@ -584,6 +584,26 @@ int getprocinfo(int pid, struct uproc *up)
         return 0;
       }
       up->pid = 1234;
+      up->->ppid = p->parent ? p->parent->pid : -1;
+      switch(p->state)
+      {
+        case UNUSED: up->state = UUNUSED;
+                     break;
+        case EMBRYO: up->state = UEMBRYO;
+                     break; 
+        case SLEEPING: up->state = USLEEPING;
+                     break;
+        case RUNNABLE: up->state = URUNNABLE;
+                     break;
+        case RUNNING: up->state = URUNNING;
+                     break;
+        case ZOMBIE: up->state = UZOMBIE;
+                     break;
+      }
+
+      up->killed = p->killed;
+      up->waiting = p->chan ? 1 : 0;
+
       // struct uproc *uptr = (struct uproc*) up;
       // ((struct uproc*) up)->pid = 1234;
       // memmove(uptr->name, p->name, 16);
