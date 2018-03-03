@@ -12,17 +12,19 @@ void ls_process()
   int pid;
   
   int i = 0;
+  printf(1, "pname | pid | ppid | msize | pstate | iswait | killed \n");
   for(i=0;i<NPROC;i++)
   {
     // get pid
     pid = getpid2(i);
 
+    printf(1, "%d !!!", pid);
     // printing
     if(getprocinfo(pid, pstruct_size, (void*)pstat) < 0)
       printf(1, "syscall err");
 
     // printing process
-    printf(1, "pname | pid | ppid | msize | pstate | iswait | killed \n");
+    
     printf(1, "%s | ", pstat->name);
     printf(1, "%d | ", pstat->pid);
     printf(1, "%d | ", pstat->ppid);
