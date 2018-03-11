@@ -25,3 +25,7 @@
 #define SYS_getprocinfo 23
 #define SYS_getpid2 24
 #define SYS_getprocsize 25
+
+#define SYS_thread_create 26
+#define SYS_thread_join 27
+#define SYS_thread_exit 28

@@ -134,3 +134,20 @@ sys_getprocsize(void)
 
   return getprocsize(pid);
 }
+
+// threads
+int
+sys_thread_create(void)
+{
+  return -1;
+}
+
+int sys_thread_join(void)
+{
+  return -1;
+}
+
+int sys_thread_exit(void)
+{
+  return -1;
+}

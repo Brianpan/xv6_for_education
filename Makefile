@@ -177,6 +177,7 @@ UPROGS=\
 	_dump\
 	_ps\
 	_dumppid\
+	_thread\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

@@ -125,6 +125,11 @@ int             dump(int, void*, void*, int);
 int 			getprocinfo(int, struct uproc*);
 int    			getpid2(int);
 int 			getprocsize(int);
+// thread
+int 			thread_create(void(*)(void*), void*, void*);
+int 			thread_join(void);
+int 			thread_exit(void);
+
 // swtch.S
 void            swtch(struct context**, struct context*);
 

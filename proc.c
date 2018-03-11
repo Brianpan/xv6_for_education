@@ -93,11 +93,12 @@ found:
 
   release(&ptable.lock);
 
-  // Allocate kernel stack.
+  // Allocate kernel stack. for TSS
   if((p->kstack = kalloc()) == 0){
     p->state = UNUSED;
     return 0;
   }
+  // stack pointer
   sp = p->kstack + KSTACKSIZE;
 
   // Leave room for trap frame.
@@ -374,10 +375,13 @@ sched(void)
 
   if(!holding(&ptable.lock))
     panic("sched ptable.lock");
+  // depth of puchcli nesting
   if(mycpu()->ncli != 1)
     panic("sched locks");
+  // sched is alreading running
   if(p->state == RUNNING)
     panic("sched running");
+  //check eflags is interruptable
   if(readeflags()&FL_IF)
     panic("sched interruptible");
   intena = mycpu()->intena;

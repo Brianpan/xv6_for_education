@@ -29,6 +29,10 @@ int dump(int, void*, void*, int);
 int getprocinfo(int, int, struct uproc*);
 int getpid2(int);
 int getprocsize(int);
+// thread
+int thread_create(void(*)(void*), void*, void*);
+int thread_join(void);
+int thread_exit(void);
 
 // ulib.c
 int stat(char*, struct stat*);

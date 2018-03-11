@@ -119,9 +119,9 @@ static struct kmap {
   uint phys_end;
   int perm;
 } kmap[] = {
-  // 4GB (vir)
+  // 2GB (vir)
  { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space
- // 4GB + 1MB
+ // 2GB + 1MB
  { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0},     // kern text+rodata
  { (void*)data,     V2P(data),     PHYSTOP,   PTE_W}, // kern data+memory
  { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices
@@ -184,6 +184,7 @@ switchuvm(struct proc *p)
   mycpu()->gdt[SEG_TSS] = SEG16(STS_T32A, &mycpu()->ts,
                                 sizeof(mycpu()->ts)-1, 0);
   mycpu()->gdt[SEG_TSS].s = 0;
+  // ts task state
   mycpu()->ts.ss0 = SEG_KDATA << 3;
   mycpu()->ts.esp0 = (uint)p->kstack + KSTACKSIZE;
   // setting IOPL=0 in eflags *and* iomb beyond the tss segment limit
