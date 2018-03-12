@@ -667,19 +667,18 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   np->parent = curproc;
 
   // create user stack
-  uint *sp =  (uint*)(stack+PGSIZE);
+  uint sp = stack+PGSIZE;
 
-  *(uint*)((char*)(stack+PGSIZE-4)) = (uint)arg;
-  *(uint*)((char*)(stack+PGSIZE-8)) = (uint)0xffffffff;
+  *(uint*)((char*)(sp-4)) = (uint)arg;
+  *(uint*)((char*)(sp-8)) = (uint)0xffffffff;
 
   // assign trapframe
-  // *np->tf = *curproc->tf;
   memmove(np->tf, curproc->tf, sizeof(struct trapframe));
   
   np->tf->eax = 0;
 
   np->tf->eip = (uint)fnc;
-  np->tf->esp = (uint)sp - 8;
+  np->tf->esp = sp - 8;
 
   for(i = 0; i < NOFILE; i++)
     if(curproc->ofile[i])
