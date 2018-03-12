@@ -680,7 +680,7 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
 
   // assign trapframe
   // *np->tf = *curproc->tf;
-  memmove(np->tf, curproc->tf, sizeof(trapframe));
+  memmove(np->tf, curproc->tf, sizeof(struct trapframe));
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
   
