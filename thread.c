@@ -11,6 +11,7 @@ struct balance {
 };
 
 volatile int total_balance = 0;
+volatile struct spinlock lock;
 
 volatile unsigned int delay (unsigned int d) {
    unsigned int i; 
