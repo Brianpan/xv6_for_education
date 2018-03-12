@@ -10,8 +10,17 @@ struct balance {
     int amount;
 };
 
+struct thread_spinlock {
+    uint locked;       // Is the lock held?
+};
+
+struct thread_mutex {
+  uint locked;
+}
+
 volatile int total_balance = 0;
-static struct spinlock lock;
+static struct thread_spinlock lock;
+static struct thread_mutex mlock;
 
 volatile unsigned int delay (unsigned int d) {
    unsigned int i; 
@@ -23,11 +32,11 @@ volatile unsigned int delay (unsigned int d) {
 }
 
 // spin lock thread
-void thread_spin_init(struct spinlock *lk) {
+void thread_spin_init(struct thread_spinlock *lk) {
   lk->locked = 0;
 }
 
-void thread_spin_lock(struct spinlock *lk) {
+void thread_spin_lock(struct thread_spinlock *lk) {
   // do not need holding because this thread only has one purpose
   // The xchg is atomic.
   while(xchg(&lk->locked, 1) != 0)
@@ -40,11 +49,29 @@ void thread_spin_lock(struct spinlock *lk) {
 
 }
 
-void thread_spin_unlock(struct spinlock *lk) {
+void thread_spin_unlock(struct thread_spinlock *lk) {
   __sync_synchronize();
   asm volatile("movl $0, %0" : "+m" (lk->locked) : );
 }
 
+// mutex
+void thread_mutex_init(struct thread_mutex *lk) {
+  lk->locked = 0;
+}
+
+void thread_mutex_lock(struct thread_mutex *lk) {
+  while( xchg(&lk->locked) != 0 )
+    // release cpu for scheduler
+    sleep(1);
+  __sync_synchronize();
+}
+
+void thread_mutex_unlock(struct thread_mutex *lk) {
+  __sync_synchronize();
+  lk->locked = 0;
+}
+
+// parallel works
 void do_work(void *arg){
     int i; 
     int old;
@@ -53,12 +80,14 @@ void do_work(void *arg){
     printf(1, "Starting do_work: s:%s\n", b->name);
 
     for (i = 0; i < b->amount; i++) { 
-         thread_spin_lock(&lock);
-         old = total_balance;
-         delay(100000);
-         total_balance = old + 1;
+        // thread_spin_lock(&lock);
+        thread_mutex_lock(&mlock);
+        old = total_balance;
+        delay(100000);
+        total_balance = old + 1;
 
-         thread_spin_unlock(&lock);
+        // thread_spin_unlock(&lock);
+        thread_mutex_unlock(&mlock);
     }
   
     printf(1, "Done s:%s\n", b->name);
@@ -71,9 +100,13 @@ int main(int argc, char *argv[]) {
 
   struct balance b1 = {"b1", 3200};
   struct balance b2 = {"b2", 2800};
- 
+   
   void *s1, *s2;
   int t1, t2, r1, r2;
+
+  // lock init
+  // thread_spin_init(&lock);
+  thread_mutex_init(&mlock);
 
   s1 = malloc(4096);
   s2 = malloc(4096);
