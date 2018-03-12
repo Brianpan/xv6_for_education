@@ -667,7 +667,7 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   np->parent = curproc;
 
   // create user stack
-  uint sp = stack+PGSIZE;
+  uint sp = (uint)stack+PGSIZE;
 
   *(uint*)((char*)(sp-4)) = (uint)arg;
   *(uint*)((char*)(sp-8)) = (uint)0xffffffff;
