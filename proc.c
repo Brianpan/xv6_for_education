@@ -720,7 +720,7 @@ int thread_join(void)
     havekids = 0;
     for(p=ptable.proc;p<&ptable.proc[NPROC];p++)
     {
-      if(p->parent != curproc->pid)
+      if(p->parent != curproc)
         continue;
       havekids = 1;
       //
