@@ -19,7 +19,7 @@ struct thread_mutex {
 };
 
 volatile int total_balance = 0;
-static struct thread_spinlock lock;
+// static struct thread_spinlock lock;
 static struct thread_mutex mlock;
 
 volatile unsigned int delay (unsigned int d) {
