@@ -673,8 +673,9 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
 
   // create user stack
   uint *sp =  (uint*)( (char*)(stack+4096) );
-  (uint*)((char*)(sp-4)) = (uint)arg;
-  (uint*)((char*)(sp-8)) = (uint)0xffffffff;
+
+  *(uint*)((char*)(sp-4)) = (uint)arg;
+  *(uint*)((char*)(sp-8)) = (uint)0xffffffff;
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
@@ -682,11 +683,11 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   // assign trapframe
   np->tf->eip = (uint)fnc;
   np->tf->esp = (uint)(sp-8);
-  np->tf->cs = p->tf->cs;
-  np->tf->ds = p->tf->ds;
-  np->tf->es = p->tf->es;
-  np->tf->ss = p->tf->fs;
-  np->tf->eflags = p->tf->eflags;
+  np->tf->cs = curproc->tf->cs;
+  np->tf->ds = curproc->tf->ds;
+  np->tf->es = curproc->tf->es;
+  np->tf->ss = curproc->tf->fs;
+  np->tf->eflags = curproc->tf->eflags;
 
   for(i = 0; i < NOFILE; i++)
     if(curproc->ofile[i])
@@ -758,19 +759,6 @@ void thread_exit(void)
 
   if(curproc == initproc)
     panic("init exiting");
-
-  // Close all open files.
-  for(fd = 0; fd < NOFILE; fd++){
-    if(curproc->ofile[fd]){
-      fileclose(curproc->ofile[fd]);
-      curproc->ofile[fd] = 0;
-    }
-  }
-
-  begin_op();
-  iput(curproc->cwd);
-  end_op();
-  curproc->cwd = 0;
 
   acquire(&ptable.lock);
 
