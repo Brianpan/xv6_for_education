@@ -1,7 +1,6 @@
-#include "x86.h"
-#include "defs.h"
 #include "types.h"
 #include "stat.h"
+#include "x86.h"
 #include "user.h"
 #include "syscall.h"
 #include "spinlock.h"
@@ -24,7 +23,6 @@ volatile unsigned int delay (unsigned int d) {
 
 // spin lock thread
 void thread_spin_init(struct spinlock *lk) {
-  lk->cpu = 0;
   lk->locked = 0;
 }
 
@@ -39,12 +37,9 @@ void thread_spin_lock(struct spinlock *lk) {
   // references happen after the lock is acquired.
   __sync_synchronize();
 
-  // Record info about lock acquisition for debugging.
-  lk->cpu = mycpu();
 }
 
 void thread_spin_unlock(struct spinlock *lk) {
-  lk->cpu = 0;
   __sync_synchronize();
   asm volatile("mov $0, %0" : "+m" (lk->locked) : );
 }
