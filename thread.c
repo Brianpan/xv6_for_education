@@ -15,8 +15,8 @@ struct thread_spinlock {
 };
 
 struct thread_mutex {
-  uint locked;
-}
+    uint locked;
+};
 
 volatile int total_balance = 0;
 static struct thread_spinlock lock;
@@ -60,7 +60,7 @@ void thread_mutex_init(struct thread_mutex *lk) {
 }
 
 void thread_mutex_lock(struct thread_mutex *lk) {
-  while( xchg(&lk->locked) != 0 )
+  while( xchg(&lk->locked, 1) != 0 )
     // release cpu for scheduler
     sleep(1);
   __sync_synchronize();
