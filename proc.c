@@ -679,7 +679,7 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   np->tf->eax = 0;
 
   np->tf->eip = (uint)fnc;
-  np->tf->esp = (uint)(*sp-8);
+  np->tf->esp = (uint)sp - 8;
   // np->tf->cs = curproc->tf->cs;
   // np->tf->ds = curproc->tf->ds;
   // np->tf->es = curproc->tf->es;
