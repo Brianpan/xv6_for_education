@@ -139,7 +139,7 @@ sys_getprocsize(void)
 int
 sys_thread_create(void)
 {
-  uint fnc_addr, arg_addr, stack_addr;
+  int fnc_addr, arg_addr, stack_addr;
   if( argint(0, &fnc_addr) < 0 || argint(1, &arg_addr) < 0 || argint(2, &stack_addr) < 0 )
     return -1;
   // int cast to function ptr
@@ -153,6 +153,6 @@ int sys_thread_join(void)
 
 int sys_thread_exit(void)
 {
-  thead_exit();
+  thread_exit();
   return 0;
 }
