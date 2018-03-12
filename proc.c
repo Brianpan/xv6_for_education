@@ -681,13 +681,14 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   np->tf->eax = 0;
   
   // assign trapframe
+  *np->tf = *curproc->tf;
   np->tf->eip = (uint)fnc;
   np->tf->esp = (uint)(sp-8);
-  np->tf->cs = curproc->tf->cs;
-  np->tf->ds = curproc->tf->ds;
-  np->tf->es = curproc->tf->es;
-  np->tf->ss = curproc->tf->fs;
-  np->tf->eflags = curproc->tf->eflags;
+  // np->tf->cs = curproc->tf->cs;
+  // np->tf->ds = curproc->tf->ds;
+  // np->tf->es = curproc->tf->es;
+  // np->tf->ss = curproc->tf->fs;
+  // np->tf->eflags = curproc->tf->eflags;
 
   for(i = 0; i < NOFILE; i++)
     if(curproc->ofile[i])
