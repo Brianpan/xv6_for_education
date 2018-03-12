@@ -11,7 +11,7 @@ struct balance {
 };
 
 volatile int total_balance = 0;
-volatile struct spinlock lock;
+static struct spinlock lock;
 
 volatile unsigned int delay (unsigned int d) {
    unsigned int i; 
@@ -42,7 +42,7 @@ void thread_spin_lock(struct spinlock *lk) {
 
 void thread_spin_unlock(struct spinlock *lk) {
   __sync_synchronize();
-  asm volatile("mov $0, %0" : "+m" (lk->locked) : );
+  asm volatile("movl $0, %0" : "+m" (lk->locked) : );
 }
 
 void do_work(void *arg){
