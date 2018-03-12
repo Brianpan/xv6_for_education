@@ -1,3 +1,5 @@
+#include "x86.h"
+#include "defs.h"
 #include "types.h"
 #include "stat.h"
 #include "user.h"
