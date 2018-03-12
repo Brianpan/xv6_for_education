@@ -718,9 +718,9 @@ int thread_join(void)
   for(;;)
   {
     havekids = 0;
-    for(p=ptable.proc;p<ptable.proc[NPROC];p++)
+    for(p=ptable.proc;p<&ptable.proc[NPROC];p++)
     {
-      if(p->parent != curproc=>pid)
+      if(p->parent != curproc->pid)
         continue;
       havekids = 1;
       //
@@ -759,6 +759,19 @@ void thread_exit(void)
 
   if(curproc == initproc)
     panic("init exiting");
+
+  // Close all open files.
+  for(fd = 0; fd < NOFILE; fd++){
+    if(curproc->ofile[fd]){
+      fileclose(curproc->ofile[fd]);
+      curproc->ofile[fd] = 0;
+    }
+  }
+
+  begin_op();
+  iput(curproc->cwd);
+  end_op();
+  curproc->cwd = 0;
 
   acquire(&ptable.lock);
 
