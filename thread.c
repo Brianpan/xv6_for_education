@@ -31,6 +31,8 @@ void do_work(void *arg){
          old = total_balance;
          delay(100000);
          total_balance = old + 1;
+         printf(1, "counter:%d\n", i);
+
          //thread_spin_unlock(&lock);
     }
   
