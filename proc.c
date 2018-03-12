@@ -669,8 +669,8 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   // create user stack
   uint *sp =  (uint*)(stack+PGSIZE);
 
-  *(uint*)((char*)(sp-4)) = (uint)arg;
-  *(uint*)((char*)(sp-8)) = (uint)0xffffffff;
+  *(uint*)((char*)(stack+PGSIZE-4)) = (uint)arg;
+  *(uint*)((char*)(stack+PGSIZE-8)) = (uint)0xffffffff;
 
   // assign trapframe
   // *np->tf = *curproc->tf;
@@ -680,11 +680,6 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
 
   np->tf->eip = (uint)fnc;
   np->tf->esp = (uint)sp - 8;
-  // np->tf->cs = curproc->tf->cs;
-  // np->tf->ds = curproc->tf->ds;
-  // np->tf->es = curproc->tf->es;
-  // np->tf->ss = curproc->tf->fs;
-  // np->tf->eflags = curproc->tf->eflags;
 
   for(i = 0; i < NOFILE; i++)
     if(curproc->ofile[i])
