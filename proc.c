@@ -677,11 +677,14 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   *(uint*)((char*)(sp-4)) = (uint)arg;
   *(uint*)((char*)(sp-8)) = (uint)0xffffffff;
 
+  // assign trapframe
+  *np->tf = *curproc->tf;
+
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
   
-  // assign trapframe
-  *np->tf = *curproc->tf;
+  
+
   np->tf->eip = (uint)fnc;
   np->tf->esp = (uint)(sp-8);
   // np->tf->cs = curproc->tf->cs;
