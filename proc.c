@@ -582,11 +582,6 @@ int getprocinfo(int pid, struct uproc *up)
   {
     if(p->pid == pid)
     {
-      // if(p->state != RUNNING)
-      // {
-      //   release(&ptable.lock);
-      //   return 0;
-      // }
       up->pid = p->pid;
       up->ppid = p->parent ? p->parent->pid : -1;
       switch(p->state)
@@ -672,7 +667,7 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   np->parent = curproc;
 
   // create user stack
-  uint *sp =  (uint*)(stack+4096);
+  uint *sp =  (uint*)(stack+PGSIZE);
 
   *(uint*)((char*)(sp-4)) = (uint)arg;
   *(uint*)((char*)(sp-8)) = (uint)0xffffffff;
@@ -680,11 +675,11 @@ int thread_create(void(*fnc)(void*), void *arg, void *stack)
   // assign trapframe
   // *np->tf = *curproc->tf;
   memmove(np->tf, curproc->tf, sizeof(struct trapframe));
-  // Clear %eax so that fork returns 0 in the child.
-  np->tf->eax = 0;
   
+  np->tf->eax = 0;
+
   np->tf->eip = (uint)fnc;
-  np->tf->esp = (uint)(sp-8);
+  np->tf->esp = (uint)(*sp-8);
   // np->tf->cs = curproc->tf->cs;
   // np->tf->ds = curproc->tf->ds;
   // np->tf->es = curproc->tf->es;
