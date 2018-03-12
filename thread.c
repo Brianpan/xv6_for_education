@@ -22,28 +22,6 @@ volatile unsigned int delay (unsigned int d) {
    return i;   
 }
 
-void do_work(void *arg){
-    int i; 
-    int old;
-   
-    struct balance *b = (struct balance*) arg; 
-    printf(1, "Starting do_work: s:%s\n", b->name);
-
-    for (i = 0; i < b->amount; i++) { 
-         thread_spin_lock(&lock);
-         old = total_balance;
-         delay(100000);
-         total_balance = old + 1;
-
-         thread_spin_unlock(&lock);
-    }
-  
-    printf(1, "Done s:%s\n", b->name);
-
-    thread_exit();
-    return;
-}
-
 // spin lock thread
 void thread_spin_init(struct spinlock *lk) {
   lk->cpu = 0;
@@ -71,6 +49,27 @@ void thread_spin_unlock(struct spinlock *lk) {
   asm volatile("mov $0, %0" : "+m" (lk->locked) : );
 }
 
+void do_work(void *arg){
+    int i; 
+    int old;
+   
+    struct balance *b = (struct balance*) arg; 
+    printf(1, "Starting do_work: s:%s\n", b->name);
+
+    for (i = 0; i < b->amount; i++) { 
+         thread_spin_lock(&lock);
+         old = total_balance;
+         delay(100000);
+         total_balance = old + 1;
+
+         thread_spin_unlock(&lock);
+    }
+  
+    printf(1, "Done s:%s\n", b->name);
+
+    thread_exit();
+    return;
+}
 
 int main(int argc, char *argv[]) {
 
