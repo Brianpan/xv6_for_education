@@ -343,7 +343,7 @@ iappend(uint inum, void *xp, int n)
     x = xint(indirect[entry_idx]);
     n1 = min(n, (fbn + 1) * BSIZE - off);
     rsect(x, buf);
-    bcopy(p, buf + off - (fbn * BSIZE), n1);
+    bcopy(p, buf + off - (entry_idx * BSIZE), n1);
     wsect(x, buf);
     n -= n1;
     off += n1;
