@@ -386,7 +386,7 @@ bmap(struct inode *ip, uint bn)
 
   // base is empty
   if( (addr = ip->addrs[0]) == 0 )
-    ip->addrs[bn] = addr = balloc(ip->dev);
+    ip->addrs[0] = addr = balloc(ip->dev);
   // load first block in link list
   bp = bread(ip->dev, addr);
   brelse(bp);
