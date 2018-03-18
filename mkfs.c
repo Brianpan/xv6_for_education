@@ -309,6 +309,7 @@ iappend(uint inum, void *xp, int n)
 
   rinode(inum, &din);
   off = xint(din.size);
+  printf("inum %d has size %d \n", inum, n);
   // printf("append inum %d at off %d sz %d\n", inum, off, n);
   while(n > 0){
     // Get the block number of the last block from the offset
@@ -326,6 +327,7 @@ iappend(uint inum, void *xp, int n)
     rsect(xint(din.addrs[0]), (char*)indirect);
     addr = din.addrs[0];
 
+    // multi-linklist
     for(idx=0;idx<linklist_idx;idx++) {
       if(indirect[LINKLIST_ENTRY] == 0) {
         indirect[LINKLIST_ENTRY] = xint(freeblock++);
@@ -339,11 +341,14 @@ iappend(uint inum, void *xp, int n)
       indirect[entry_idx] = xint(freeblock++);
       wsect(xint(addr), (char*)indirect);
     }
-    
+    // get the sector number
     x = xint(indirect[entry_idx]);
+    // BSIZE or n
     n1 = min(n, (fbn + 1) * BSIZE - off);
+    // read sector
     rsect(x, buf);
-    bcopy(p, buf + off - (entry_idx * BSIZE), n1);
+    //copy data into buf
+    bcopy(p, buf + off - (fbn * BSIZE), n1);
     wsect(x, buf);
     n -= n1;
     off += n1;
