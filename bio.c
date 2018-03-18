@@ -100,6 +100,7 @@ bread(uint dev, uint blockno)
 
   b = bget(dev, blockno);
   if((b->flags & B_VALID) == 0) {
+    // need to read from disk
     iderw(b);
   }
   return b;
@@ -129,10 +130,13 @@ brelse(struct buf *b)
   b->refcnt--;
   if (b->refcnt == 0) {
     // no one is waiting for it.
+    // linked list remove b
     b->next->prev = b->prev;
     b->prev->next = b->next;
+    // put to bcache.head.next
     b->next = bcache.head.next;
     b->prev = &bcache.head;
+    // as the head of bcache
     bcache.head.next->prev = b;
     bcache.head.next = b;
   }

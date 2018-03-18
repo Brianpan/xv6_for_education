@@ -59,6 +59,7 @@ initlog(int dev)
   struct superblock sb;
   initlock(&log.lock, "log");
   readsb(dev, &sb);
+  // log.dev, log.start, log.size comes from superblock
   log.start = sb.logstart;
   log.size = sb.nlog;
   log.dev = dev;
@@ -227,7 +228,7 @@ log_write(struct buf *b)
   }
   log.lh.block[i] = b->blockno;
   if (i == log.lh.n)
-    log.lh.n++;
+    log.lh.n++; // increase logged block size
   b->flags |= B_DIRTY; // prevent eviction
   release(&log.lock);
 }

@@ -19,7 +19,7 @@
 
 // Disk layout:
 // [ boot block | sb block | log | inode blocks | free bit map | data blocks ]
-
+// FSSIZE = 1000 (size of file system in blocks), BSIZE = 512
 int nbitmap = FSSIZE/(BSIZE*8) + 1;
 int ninodeblocks = NINODES / IPB + 1;
 int nlog = LOGSIZE;
