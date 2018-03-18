@@ -370,34 +370,46 @@ iunlockput(struct inode *ip)
 
 // Return the disk block address of the nth block in inode ip.
 // If there is no such block, bmap allocates one.
+// static uint
+
+// linklist implementation
 static uint
 bmap(struct inode *ip, uint bn)
 {
   uint addr, *a;
   struct buf *bp;
 
-  if(bn < NDIRECT){
-    if((addr = ip->addrs[bn]) == 0)
-      ip->addrs[bn] = addr = balloc(ip->dev);
-    return addr;
-  }
-  bn -= NDIRECT;
+  // linklist index for looping
+  uint linklist_idx = bn/LINKLIST_ENTRY;
+  uint entry_idx = bn % LINKLIST_ENTRY;
+  uint idx;
 
-  if(bn < NINDIRECT){
-    // Load indirect block, allocating if necessary.
-    if((addr = ip->addrs[NDIRECT]) == 0)
-      ip->addrs[NDIRECT] = addr = balloc(ip->dev);
-    bp = bread(ip->dev, addr);
-    a = (uint*)bp->data;
-    if((addr = a[bn]) == 0){
-      a[bn] = addr = balloc(ip->dev);
+  // base is empty
+  if( (addr = ip->addrs[0]) == 0 )
+    ip->addrs[bn] = addr = balloc(ip->dev);
+  // load first block in link list
+  bp = bread(ip->dev, addr);
+  brelse(bp);
+  // go to correct link list page
+  for(idx=0;idx<linklist_idx;idx++) {
+    a = (uint*) bp->data;
+    if( (addr = a[LINKLIST_ENTRY]) == 0 ) {
+      // new link list page
+      a[LINKLIST_ENTRY] = addr = balloc(ip->dev);
       log_write(bp);
     }
+    // change to next bp
+    bp = bread(ip->dev, addr);
     brelse(bp);
-    return addr;
   }
-
-  panic("bmap: out of range");
+  // start to get entry
+  a = (uint*) bp->data;
+  if((addr = a[entry_idx]) == 0) {
+    a[entry_idx] = addr = balloc(ip->dev);
+    log_write(bp);
+  }
+  brelse(bp);
+  return addr;
 }
 
 // Truncate inode (discard contents).

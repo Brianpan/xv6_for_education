@@ -252,6 +252,50 @@ balloc(int used)
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
+// void
+// iappend(uint inum, void *xp, int n)
+// {
+//   char *p = (char*)xp;
+//   uint fbn, off, n1;
+//   struct dinode din;
+//   char buf[BSIZE];
+//   uint indirect[NINDIRECT];
+//   uint x;
+
+//   rinode(inum, &din);
+//   off = xint(din.size);
+//   // printf("append inum %d at off %d sz %d\n", inum, off, n);
+//   while(n > 0){
+//     fbn = off / BSIZE;
+//     assert(fbn < MAXFILE);
+//     if(fbn < NDIRECT){
+//       if(xint(din.addrs[fbn]) == 0){
+//         din.addrs[fbn] = xint(freeblock++);
+//       }
+//       x = xint(din.addrs[fbn]);
+//     } else {
+//       if(xint(din.addrs[NDIRECT]) == 0){
+//         din.addrs[NDIRECT] = xint(freeblock++);
+//       }
+//       rsect(xint(din.addrs[NDIRECT]), (char*)indirect);
+//       if(indirect[fbn - NDIRECT] == 0){
+//         indirect[fbn - NDIRECT] = xint(freeblock++);
+//         wsect(xint(din.addrs[NDIRECT]), (char*)indirect);
+//       }
+//       x = xint(indirect[fbn-NDIRECT]);
+//     }
+//     n1 = min(n, (fbn + 1) * BSIZE - off);
+//     rsect(x, buf);
+//     bcopy(p, buf + off - (fbn * BSIZE), n1);
+//     wsect(x, buf);
+//     n -= n1;
+//     off += n1;
+//     p += n1;
+//   }
+//   din.size = xint(off);
+//   winode(inum, &din);
+// }
+
 void
 iappend(uint inum, void *xp, int n)
 {
@@ -261,29 +305,42 @@ iappend(uint inum, void *xp, int n)
   char buf[BSIZE];
   uint indirect[NINDIRECT];
   uint x;
+  uint addr;
 
   rinode(inum, &din);
   off = xint(din.size);
   // printf("append inum %d at off %d sz %d\n", inum, off, n);
   while(n > 0){
+    // Get the block number of the last block from the offset
     fbn = off / BSIZE;
+
+    // get idx of link list structure
+    uint linklist_idx = fbn/LINKLIST_ENTRY;
+    uint entry_idx = fbn % LINKLIST_ENTRY;
+    uint idx;
     assert(fbn < MAXFILE);
-    if(fbn < NDIRECT){
-      if(xint(din.addrs[fbn]) == 0){
-        din.addrs[fbn] = xint(freeblock++);
-      }
-      x = xint(din.addrs[fbn]);
-    } else {
-      if(xint(din.addrs[NDIRECT]) == 0){
-        din.addrs[NDIRECT] = xint(freeblock++);
-      }
-      rsect(xint(din.addrs[NDIRECT]), (char*)indirect);
-      if(indirect[fbn - NDIRECT] == 0){
-        indirect[fbn - NDIRECT] = xint(freeblock++);
-        wsect(xint(din.addrs[NDIRECT]), (char*)indirect);
-      }
-      x = xint(indirect[fbn-NDIRECT]);
+    // first link list node 
+    if(xint(din.addrs[0]) == 0) {
+      din.addrs[0] = xint(freeblock++);
     }
+    rsect(xint(din.addrs[0]), (char*)indirect);
+    addr = din.addrs[0];
+
+    for(idx=0;idx<linklist_idx;idx++) {
+      if(indirect[LINKLIST_ENTRY] == 0) {
+        indirect[LINKLIST_ENTRY] = xint(freeblock++);
+      }
+      wsect(xint(addr), (char*)indirect);
+      addr = indirect[LINKLIST_ENTRY];
+      rsect(xint(addr), (char*)indirect);
+    }
+    // entry layer
+    if(indirect[entry_idx] == 0) {
+      indirect[entry_idx] = xint(freeblock++);
+      wsect(xint(addr), (char*)indirect);
+    }
+    
+    x = xint(indirect[entry_idx]);
     n1 = min(n, (fbn + 1) * BSIZE - off);
     rsect(x, buf);
     bcopy(p, buf + off - (fbn * BSIZE), n1);
@@ -295,3 +352,4 @@ iappend(uint inum, void *xp, int n)
   din.size = xint(off);
   winode(inum, &din);
 }
+
