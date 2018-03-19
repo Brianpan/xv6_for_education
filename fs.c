@@ -408,7 +408,6 @@ bmap(struct inode *ip, uint bn)
     a[entry_idx] = addr = balloc(ip->dev);
     log_write(bp);
   }
-  brelse(bp);
   return addr;
 }
 

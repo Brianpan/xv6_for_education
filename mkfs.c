@@ -354,7 +354,6 @@ iappend(uint inum, void *xp, int n)
     off += n1;
     p += n1;
   }
-  printf("fin \n");
   din.size = xint(off);
   winode(inum, &din);
 }
