@@ -309,16 +309,18 @@ iappend(uint inum, void *xp, int n)
 
   rinode(inum, &din);
   off = xint(din.size);
-  printf("inum %d has size %d \n", inum, n);
-  // printf("append inum %d at off %d sz %d\n", inum, off, n);
+  
+  uint linklist_idx;
+  uint entry_idx;
+  uint idx;
+  printf("append inum %d at off %d sz %d\n", inum, off, n);
   while(n > 0){
     // Get the block number of the last block from the offset
     fbn = off / BSIZE;
 
     // get idx of link list structure
-    uint linklist_idx = fbn/LINKLIST_ENTRY;
-    uint entry_idx = fbn % LINKLIST_ENTRY;
-    uint idx;
+    linklist_idx = fbn/LINKLIST_ENTRY;
+    entry_idx = fbn % LINKLIST_ENTRY;
     assert(fbn < MAXFILE);
     // first link list node 
     if(xint(din.addrs[0]) == 0) {
@@ -326,7 +328,7 @@ iappend(uint inum, void *xp, int n)
     }
     rsect(xint(din.addrs[0]), (char*)indirect);
     addr = din.addrs[0];
-
+    printf("LINKLIST_ENTRY %d \n", LINKLIST_ENTRY);
     // multi-linklist
     for(idx=0;idx<linklist_idx;idx++) {
       if(indirect[LINKLIST_ENTRY] == 0) {
@@ -354,6 +356,7 @@ iappend(uint inum, void *xp, int n)
     off += n1;
     p += n1;
   }
+  printf("fin \n");
   din.size = xint(off);
   winode(inum, &din);
 }
