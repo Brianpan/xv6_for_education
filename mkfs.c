@@ -313,7 +313,6 @@ iappend(uint inum, void *xp, int n)
   uint linklist_idx;
   uint entry_idx;
   uint idx;
-  printf("append inum %d at off %d sz %d\n", inum, off, n);
   while(n > 0){
     // Get the block number of the last block from the offset
     fbn = off / BSIZE;
@@ -328,7 +327,6 @@ iappend(uint inum, void *xp, int n)
     }
     rsect(xint(din.addrs[0]), (char*)indirect);
     addr = din.addrs[0];
-    printf("LINKLIST_ENTRY %d \n", LINKLIST_ENTRY);
     // multi-linklist
     for(idx=0;idx<linklist_idx;idx++) {
       if(indirect[LINKLIST_ENTRY] == 0) {
